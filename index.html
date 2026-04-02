@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verun Protocol - Starknet MVP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #4facfe, #00f2
+cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verun Protocol - Starknet MVP</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 5px;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 3rem 0;
+        }
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        .feature h3 {
+            margin-bottom: 1rem;
+            color: #4facfe;
+        }
+        .cta {
+            margin-top: 2rem;
+        }
+        .cta a {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .cta a:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Verun Protocol</h1>
+        <p class="subtitle">Agent Trust Score Layer for Starknet</p>
+        
+        <div>
+            <span class="badge">🔗 Starknet Sepolia</span>
+            <span class="badge">⚡ Cairo Smart Contracts</span>
+            <span class="badge">🎯 v1.1 MVP</span>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🤖 Agent KYA</h3>
+                <p>Know Your Agent scoring system aggregating trust signals from multiple validators</p>
+            </div>
+            <div class="feature">
+                <h3>🔐 On-Chain Anchoring</h3>
+                <p>Every trust score evaluation is permanently recorded on Starknet Sepolia testnet</p>
+            </div>
+            <div class="feature">
+                <h3>⚖️ Validator Consensus</h3>
+                <p>2-of-3 validator consensus ensures trust score accuracy and prevents manipulation</p>
+            </div>
+        </div>
+
+        <div class="cta">
+            <a href="/api/health" target="_blank">API Status</a>
+            <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank">GitHub</a>
+        </div>
+
+        <p style="margin-top: 3rem; opacity: 0.7; font-size: 0.9rem;">
+            © 2026 BCP Partners GmbH · Powered by Starknet
+        </p>
+    </div>
+</body>
+</html>

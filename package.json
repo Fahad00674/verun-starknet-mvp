@@ -1,0 +1,21 @@
+{
+  "name": "verun-starknet-mvp",
+  "version": "1.1.0",
+  "description": "Verun Protocol - Starknet MVP - Agent Trust Score Layer",
+  "main": "src/api.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node src/api.js",
+    "deploy": "node scripts/deploy.js",
+    "test-contract": "node scripts/test-contract.js"
+  },
+  "keywords": ["starknet", "cairo", "trust-score", "agent", "web3"],
+  "author": "Fahad - BCP Partners",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
+    "starknet": "^5.24.3"
+  }
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "tokenforge",
+    "weight": 1,
+    "type": "founding"
+  },
+  {
+    "name": "validator_2",
+    "weight": 1,
+    "type": "community"
+  },
+  {
+    "name": "validator_3",
+    "weight": 1,
+    "type": "community"
+  }
+]
