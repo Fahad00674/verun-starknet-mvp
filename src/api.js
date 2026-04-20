@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import { evaluateScore } from './evaluate.js';
-import { anchorToStarknet } from './anchor.js';
+import { anchorToStarknet, readScore } from './anchor.js';
 
 dotenv.config();
 
@@ -27,52 +27,61 @@ app.get('/api/health', (req, res) => {
 app.post('/api/score', async (req, res) => {
     try {
         const { agentId, score, operation } = req.body;
-        
+
         if (!agentId || score === undefined || !operation) {
-            return res.status(400).json({ 
-                error: 'Missing required fields: agentId, score, operation' 
+            return res.status(400).json({
+                error: 'Missing required fields: agentId, score, operation'
             });
         }
 
         const evaluation = await evaluateScore(agentId, score, operation);
-        
+
         res.json(evaluation);
     } catch (error) {
-cat > src/evaluate.js << 'EOF'
-import validators from './validators.json' assert { type: 'json' };
+        console.error('Score error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
-export async function evaluateScore(agentId, score, operation) {
-    const gates = {
-        read: 300,
-        transfer: 500,
-        mint: 500,
-        order: 600
-    };
+// Anchor endpoint (score + Starknet anchor)
+app.post('/api/anchor', async (req, res) => {
+    try {
+        const { agentId, score, operation } = req.body;
 
-    const requiredScore = gates[operation] || 300;
-    const meetsThreshold = score >= requiredScore;
+        if (!agentId || score === undefined || !operation) {
+            return res.status(400).json({
+                error: 'Missing required fields: agentId, score, operation'
+            });
+        }
 
-    const validatorVotes = validators.map(v => ({
-        validator: v.name,
-        weight: v.weight,
-        approved: Math.random() > 0.3
-    }));
+        const evaluation = await evaluateScore(agentId, score, operation);
 
-    const totalWeight = validatorVotes
-        .filter(v => v.approved)
-        .reduce((sum, v) => sum + v.weight, 0);
-    
-    const consensusReached = totalWeight >= 2;
+        if (evaluation.approved) {
+            const anchor = await anchorToStarknet(agentId, score, evaluation);
+            evaluation.starknet = anchor;
+        }
 
-    return {
-        agentId,
-        score,
-        operation,
-        requiredScore,
-        meetsThreshold,
-        validators: validatorVotes,
-        consensusReached,
-        approved: meetsThreshold && consensusReached,
-        timestamp: new Date().toISOString()
-    };
-}
+        res.json(evaluation);
+    } catch (error) {
+        console.error('Anchor error:', error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Read on-chain score for an agent
+app.get('/api/score/:agentId', async (req, res) => {
+    try {
+        const result = await readScore(req.params.agentId);
+        if (!result) return res.status(503).json({ error: 'Contract not deployed yet' });
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 Verun API running on port ${PORT}`);
+    console.log(`   Health: http://localhost:${PORT}/api/health`);
+    console.log(`   Network: Starknet Sepolia Testnet`);
+    console.log(`   Contract: ${process.env.CONTRACT_ADDRESS || 'Not deployed'}`);
+});
