@@ -1,23 +1,45 @@
-import { Account, RpcProvider, json } from 'starknet';
+// NOTE: starknet.js captures global.fetch at import time. Because of this,
+// any fetch wrapper we want it to use MUST be installed BEFORE the starknet
+// import runs. We therefore import starknet via dynamic import (await import)
+// after wiring the wrapper.
+
 import * as dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-dotenv.config();
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const ARTIFACTS = path.join(ROOT, 'src_cairo/target/dev');
 
-// DRPC load-balances across backends — some lack certain methods.
-// Retry on -32601 (method not found) which indicates a bad backend route.
+// Load .env from project root explicitly — don't rely on cwd.
+dotenv.config({ path: path.join(ROOT, '.env') });
+
+// Fail loudly if required env vars are missing.
+const REQUIRED = ['STARKNET_PRIVATE_KEY', 'STARKNET_ACCOUNT_ADDRESS', 'STARKNET_RPC_URL'];
+const missing = REQUIRED.filter(k => !process.env[k]);
+if (missing.length) {
+    console.error('❌ Missing required env vars in .env:', missing.join(', '));
+    console.error('   Check', path.join(ROOT, '.env'));
+    process.exit(1);
+}
+
+// RPC compatibility shim:
+//  1. Rewrite "block_id":"pending" → "latest". Some providers (Cartridge)
+//     only accept "latest" or numeric block IDs on read calls, but
+//     starknet.js v8 defaults to "pending" for getNonce.
+//  2. Retry on -32601 (method not found) for load-balanced RPCs that
+//     occasionally route to a backend missing a method.
 const origFetch = globalThis.fetch;
-globalThis.fetch = async (url, opts) => {
+const wrappedFetch = async (url, opts) => {
+    if (opts && typeof opts.body === 'string') {
+        opts = { ...opts, body: opts.body.replace(/"block_id"\s*:\s*"pending"/g, '"block_id":"latest"') };
+    }
     for (let i = 0; i < 40; i++) {
         const resp = await origFetch(url, opts);
         const text = await resp.clone().text();
-        const data = JSON.parse(text);
+        let data;
+        try { data = JSON.parse(text); } catch { return new Response(text, { status: resp.status, headers: resp.headers }); }
         if (data?.error?.code === -32601) {
             await new Promise(r => setTimeout(r, 500));
             continue;
@@ -26,11 +48,25 @@ globalThis.fetch = async (url, opts) => {
     }
     return origFetch(url, opts);
 };
+globalThis.fetch = wrappedFetch;
+// starknet.js uses `typeof global !== "undefined" && global.fetch` in its
+// fetchPonyfill, so set both refs.
+global.fetch = wrappedFetch;
+
+// NOW import starknet — it'll capture the wrapped fetch.
+const { Account, RpcProvider, json } = await import('starknet');
 
 async function deploy() {
     console.log('🚀 Verun Starknet Deployment — Sepolia Testnet\n');
 
+    console.log('[DEBUG] env at deploy():', {
+        RPC: process.env.STARKNET_RPC_URL,
+        ADDR_prefix: process.env.STARKNET_ACCOUNT_ADDRESS?.slice(0, 10),
+        KEY_prefix: process.env.STARKNET_PRIVATE_KEY?.slice(0, 6),
+    });
+
     const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
+    // starknet.js v8.9.x Account takes an options object: {provider, address, signer}.
     const account = new Account({
         provider,
         address: process.env.STARKNET_ACCOUNT_ADDRESS,
