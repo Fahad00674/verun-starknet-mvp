@@ -5,11 +5,7 @@
   "main": "src/api.js",
   "type": "module",
   "scripts": {
-    "dev": "node src/api.js",
-    "build": "cd src_cairo && scarb build",
-    "deploy": "node scripts/deploy.js",
-    "deploy-account": "starkli account deploy ~/.starkli-wallets/verun/account.json --rpc https://starknet-sepolia.drpc.org --keystore ~/.starkli-wallets/verun/keystore.json --keystore-password verun123",
-    "test-contract": "node scripts/test-contract.js"
+    "dev": "node src/api.js"
   },
   "keywords": [
     "starknet",
