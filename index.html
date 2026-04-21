@@ -356,7 +356,6 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
     <a href="#demo">Demo</a>
     <a href="#platforms">Platforms</a>
     <a href="#architecture">Architecture</a>
-    <a href="#compliance">Compliance</a>
   </div>
   <div class="nav-right">
     <div class="algo-badge">
@@ -383,10 +382,9 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
         <span class="pill pill-teal">Agent Validation</span>
         <span class="pill pill-purple">Human Approval Gate</span>
         <span class="pill pill-purple">Full Automation Mode</span>
-        <span class="pill pill-green">Starknet On-Chain</span>
-        <span class="pill pill-green">~3.6s Settlement</span>
-        <span class="pill pill-amber">MiCA · AML Ready</span>
-        <span class="pill pill-amber">x402 Protocol</span>
+        <span class="pill pill-green">Starknet Sepolia Live</span>
+        <span class="pill pill-green">Cairo Smart Contracts</span>
+        <span class="pill pill-amber">Open Source MVP</span>
       </div>
       <div class="hero-btns">
         <a href="#demo" class="btn btn-teal">Run Demo →</a>
@@ -541,7 +539,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
         <div class="arch-node">
           <div class="arch-icon purple">🔐</div>
           <h4>Verun Gate</h4>
-          <p>Validates platform + agent. x402 micro-payment. Issues trust verdict.</p>
+          <p>Validates platform + agent. Runs the trust score + validator consensus. Issues a verdict.</p>
           <div class="arch-tag">/api/evaluate</div>
         </div>
         <div class="arch-arr">→</div>
@@ -566,35 +564,10 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
           <div class="arch-tag">Cairo · Sepolia</div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPLIANCE -->
-<section class="section mica-section" id="compliance">
-  <div class="container">
-    <div class="section-label">MiCA · Compliance</div>
-    <h2 class="section-h2">Regulation-ready by default.</h2>
-    <p class="section-sub">Every Verun feature maps directly to MiCA. Compliance by default.</p>
-    <div class="mica-table-wrap">
-      <table class="mica-table">
-        <thead>
-          <tr>
-            <th>Regulation</th>
-            <th>Requirement</th>
-            <th>Verun Feature</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>MiCA Art. 68</td><td>CASP Agent & Platform Verification</td><td>Bidirectional Trust Score · On-Chain Anchor</td><td><span class="tag">Live</span></td></tr>
-          <tr><td>MiCA Art. 72</td><td>AML/CFT Screening</td><td>2-of-3 Validator Consensus · Auto-BLOCK</td><td><span class="tag">Live</span></td></tr>
-          <tr><td>MiCA Art. 75</td><td>Audit Trail / Record-Keeping</td><td>Starknet Note TX · Immutable · Timestamped</td><td><span class="tag">Live</span></td></tr>
-          <tr><td>MiCA Art. 67</td><td>Operational Risk · Autonomous Systems</td><td>Human Approval Gate · Policy Bounds · Revoke</td><td><span class="tag">Live</span></td></tr>
-          <tr><td>FATF Travel Rule</td><td>Transfer Monitoring ≥ €1,000</td><td>Operation-Level Scoring (transfer/mint/order)</td><td><span class="tag">Live</span></td></tr>
-          <tr><td>ESMA Guidelines</td><td>Automated Decision Transparency</td><td>Validator Vote Log · Agent Recommendation Log</td><td><span class="tag">Live</span></td></tr>
-        </tbody>
-      </table>
+      <p style="max-width:760px;margin:40px auto 0;text-align:center;font-size:13px;color:var(--text2);line-height:1.7">
+        <span style="color:var(--text3);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:6px">Compliance Design</span>
+        The architecture is designed to map to MiCA, FATF Travel Rule, and ESMA principles — bidirectional attestation, operation-level thresholds, immutable on-chain records. Full regulatory compliance requires external audits and KYC/AML integrations, which are on the roadmap.
+      </p>
     </div>
   </div>
 </section>
@@ -961,7 +934,7 @@ function renderSupervised(body) {
     queueLogs([
       ['human','HUMAN','approved: invest €5,000 EURC on tokenforge','amber'],
       ['tx','TX','anchoring approval on Starknet...','teal'],
-      ['ok','OK','approval anchored · ~3.6s','green'],
+      ['ok','OK','approval anchored on Starknet Sepolia','green'],
       ['ok','OK','transaction executed · MiCA audit trail complete','green'],
     ]);
   }
@@ -1023,7 +996,7 @@ function renderAuto(body) {
       <ul class="check-list" id="cl-auto">
         <li id="ca-1">Policy check: tokenforge · €3,200 EURC ✓</li>
         <li id="ca-2">Verun score re-validated: 920 (cached 4h)</li>
-        <li id="ca-3">x402 micro-fee paid · access granted</li>
+        <li id="ca-3">policy check passed · access granted</li>
         <li id="ca-4">Transaction initiated on tokenforge Chain API</li>
         <li id="ca-5">Settlement: EURC → tokenforge wallet</li>
       </ul>
@@ -1038,7 +1011,7 @@ function renderAuto(body) {
       ['auto','AUTO','executing: invest €3,200 EURC on tokenforge','purple'],
       ['verun','VERUN','policy check: within bounds','dim'],
       ['verun','VERUN','score cache: 920 · valid 4h · skip re-eval','dim'],
-      ['auto','AUTO','x402 fee paid · tokenforge API called','teal'],
+      ['auto','AUTO','policy check passed · tokenforge API called','teal'],
       ['ok','OK','transaction initiated · no human required','green'],
     ]);
   }
@@ -1070,7 +1043,7 @@ function renderAuto(body) {
     queueLogs([
       ['tx','TX','anchoring execution on Starknet...','teal'],
       ['tx','TX',`txID: ${txid.substr(0,20)}...`,'dim'],
-      ['ok','OK','anchored · ~3.6s · audit trail complete','green'],
+      ['ok','OK','anchored on Starknet · audit trail complete','green'],
       ['auto','AUTO','human notified · next execution scheduled','purple'],
     ]);
   }
