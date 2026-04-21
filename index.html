@@ -301,6 +301,44 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
   .hero h1{font-size:32px}
   .mode-tabs{flex-direction:column;width:100%}
 }
+.live-demo{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:0 auto}
+@media(max-width:768px){.live-demo{grid-template-columns:1fr}}
+.live-form{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.form-row{margin-bottom:16px}
+.form-row label{display:block;font-size:11px;color:var(--text2);margin-bottom:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px;font-weight:600}
+.form-row input,.form-row select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px 12px;color:var(--text);font-family:var(--mono);font-size:14px;outline:none}
+.form-row input:focus,.form-row select:focus{border-color:var(--teal)}
+.form-hint{font-size:10px;color:var(--text3);margin-top:4px;font-family:var(--mono)}
+.live-result{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;min-height:320px}
+.live-placeholder{color:var(--text3);text-align:center;padding:60px 20px;font-size:13px;line-height:1.8}
+.live-loading{color:var(--text2);text-align:center;padding:60px 20px;font-size:13px}
+.live-error{color:#ff6666;padding:16px;background:rgba(224,0,0,0.1);border-radius:8px;font-size:13px;font-family:var(--mono)}
+.result-box{font-family:var(--mono);font-size:12px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:12px}
+.result-row:last-of-type{border-bottom:none}
+.result-label{color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;font-size:10px;white-space:nowrap}
+.result-value{color:var(--text);text-align:right}
+.result-votes{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.validator-chip{font-size:10px;padding:2px 8px;border-radius:10px;background:var(--bg);font-weight:600}
+.validator-chip.approved{color:var(--teal);border:1px solid var(--teal-border)}
+.validator-chip.denied{color:#888;border:1px solid var(--border);opacity:0.6}
+.verdict-chip{font-weight:700;padding:4px 12px;border-radius:14px;font-size:11px;letter-spacing:1px}
+.verdict-chip.approved{color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border)}
+.verdict-chip.denied{color:#ff8888;background:rgba(224,0,0,0.12);border:1px solid rgba(224,0,0,0.3)}
+.verdict-row{padding:14px 0;border-top:1px solid var(--border);margin-top:6px}
+.anchor-box{margin-top:16px;padding:14px;border-radius:8px;background:var(--bg);border:1px solid var(--border)}
+.anchor-box.live{border-color:var(--teal-border);background:var(--teal-dim)}
+.anchor-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text2);font-weight:600}
+.mode-pill{font-size:9px;padding:2px 8px;border-radius:8px;letter-spacing:1px}
+.mode-pill.live{background:var(--teal);color:#000}
+.mode-pill.mock{background:#555;color:#fff}
+.anchor-hash{font-size:11px;word-break:break-all;color:var(--text);padding:4px 0;font-family:var(--mono)}
+.anchor-link{display:inline-block;margin-top:8px;color:var(--teal);text-decoration:none;font-size:12px;font-weight:600}
+.anchor-link:hover{text-decoration:underline}
+.anchor-error{margin-top:8px;font-size:10px;color:#ff8888;padding:6px 10px;background:rgba(224,0,0,0.1);border-radius:4px}
+.contract-ref{text-align:center;margin-top:24px;font-size:11px;color:var(--text3);font-family:var(--mono)}
+.contract-ref a{color:var(--teal);text-decoration:none}
+.contract-ref a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -386,38 +424,50 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
   </div>
 </section>
 
-<!-- DEMO -->
+<!-- LIVE TESTNET DEMO -->
 <section class="section demo-section" id="demo">
   <div class="container">
-    <div style="text-align:center">
-      <div class="section-label">Interactive Demo</div>
-      <h2 class="section-h2" style="margin-bottom:8px">Watch the full agent flow.</h2>
-      <p style="font-size:14px;color:var(--text2)">Discovery → Human approval → Full automation.</p>
+    <div style="text-align:center;margin-bottom:36px">
+      <div class="section-label">Live Testnet</div>
+      <h2 class="section-h2" style="margin-bottom:8px">Try it. Real on-chain anchor.</h2>
+      <p style="font-size:14px;color:var(--text2)">Submit a trust evaluation. If approved, a real transaction is signed and recorded on Starknet Sepolia.</p>
     </div>
 
-    <div class="mode-tabs">
-      <button class="mode-tab active" id="tab-discover" onclick="setMode('discover')">🔍 Discovery</button>
-      <button class="mode-tab" id="tab-supervised" onclick="setMode('supervised')">👤 Supervised</button>
-      <button class="mode-tab auto-tab" id="tab-auto" onclick="setMode('auto')">⚡ Autonomous</button>
+    <div class="live-demo">
+      <div class="live-form">
+        <div class="form-row">
+          <label>Agent ID</label>
+          <input type="text" id="f-agent" value="agent-001" maxlength="31" placeholder="agent-001">
+          <div class="form-hint">≤ 31 characters (felt252 limit)</div>
+        </div>
+        <div class="form-row">
+          <label>Trust Score</label>
+          <input type="number" id="f-score" value="650" min="0" max="1000">
+          <div class="form-hint">Range 0–1000</div>
+        </div>
+        <div class="form-row">
+          <label>Operation</label>
+          <select id="f-op">
+            <option value="read">read · threshold 300</option>
+            <option value="transfer" selected>transfer · threshold 500</option>
+            <option value="mint">mint · threshold 500</option>
+            <option value="order">order · threshold 600</option>
+          </select>
+        </div>
+        <button class="btn btn-teal" id="f-submit" onclick="runEval()" style="width:100%;margin-top:6px">Evaluate →</button>
+      </div>
+
+      <div class="live-result" id="live-result">
+        <div class="live-placeholder">
+          Fill the form and click <strong>Evaluate</strong> to call the live API.<br><br>
+          <span style="font-size:10px;opacity:0.7;font-family:var(--mono)">POST /api/evaluate<br>verun-starknet-mvp.vercel.app</span>
+        </div>
+      </div>
     </div>
 
-    <div class="demo-layout">
-      <div class="step-panel" id="step-panel">
-        <div class="step-dots" id="step-dots"></div>
-        <div id="stage-body" class="stage-body"></div>
-        <div class="step-nav">
-          <button class="nav-btn" id="btn-prev" onclick="prevStep()" disabled>← Back</button>
-          <span class="step-counter" id="step-counter"></span>
-          <button class="nav-btn primary" id="btn-next" onclick="nextStep()">Next →</button>
-        </div>
-      </div>
-      <div class="terminal-panel">
-        <div class="terminal-header">
-          <div class="terminal-dots"><div class="td td1"></div><div class="td td2"></div><div class="td td3"></div></div>
-          <div class="terminal-title" id="terminal-title">verun · agent log</div>
-        </div>
-        <div class="terminal-body" id="terminal-body"></div>
-      </div>
+    <div class="contract-ref">
+      TrustScore contract: <a href="https://sepolia.voyager.online/contract/0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c" target="_blank">0x4d1f…555c</a>
+      · Network: Starknet Sepolia
     </div>
   </div>
 </section>
@@ -519,8 +569,8 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
         <div class="arch-node">
           <div class="arch-icon green">⛓️</div>
           <h4>Starknet</h4>
-          <p>Every evaluation, approval, and execution anchored on-chain. ~3.6s.</p>
-          <div class="arch-tag">ARC-4 · Note TX</div>
+          <p>Every approved evaluation anchored on-chain via the TrustScore Cairo contract on Sepolia.</p>
+          <div class="arch-tag">Cairo · Sepolia</div>
         </div>
       </div>
     </div>
@@ -568,7 +618,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
         <a href="#demo">Demo</a>
         <a href="#platforms">Platforms</a>
         <a href="#architecture">Architecture</a>
-        <a href="https://github.com/rafaschul/verun-starknet-mvp" target="_blank">GitHub</a>
+        <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank">GitHub</a>
         <a href="https://bcpp.io" target="_blank">bcpp.io</a>
         <a href="https://bcpp.io/impressum" target="_blank">Impressum</a>
         <a href="https://bcpp.io/contact" target="_blank">Contact</a>
@@ -579,409 +629,115 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
 </footer>
 
 <script>
-// ─── STATE ──────────────────────────────────────────────
-let currentMode = 'discover';
-let currentStep = 1;
-let logTimer = null;
+const API_URL = 'https://verun-starknet-mvp.vercel.app/api/evaluate';
 
-const MODES = {
-  discover: {
-    steps: 3,
-    title: 'verun · discovery log',
-    color: 'teal',
-    labels: ['Platform Scan', 'Verun Validation', 'Agent Referral']
-  },
-  supervised: {
-    steps: 3,
-    title: 'verun · supervised log',
-    color: 'teal',
-    labels: ['Referral Received', 'Human Review', 'Decision Anchored']
-  },
-  auto: {
-    steps: 3,
-    title: 'verun · autonomous log',
-    color: 'purple',
-    labels: ['Policy Loaded', 'Auto Execute', 'On-Chain Proof']
-  }
-};
-
-// ─── LOG ────────────────────────────────────────────────
-function now() { return new Date().toTimeString().substr(0,8); }
-function addLog(type, typeLabel, msg, cls='') {
-  const body = document.getElementById('terminal-body');
-  const line = document.createElement('div');
-  line.className = `log-line log-${type}`;
-  line.innerHTML = `<span class="log-time">${now()}</span><span class="log-type">${typeLabel}</span><span class="log-msg ${cls}">${msg}</span>`;
-  body.appendChild(line);
-  setTimeout(()=>line.classList.add('show'), 20);
-  body.scrollTop = body.scrollHeight;
-}
-function queueLogs(logs) {
-  clearInterval(logTimer);
-  let i = 0;
-  logTimer = setInterval(() => {
-    if(i >= logs.length) { clearInterval(logTimer); return; }
-    addLog(...logs[i++]);
-  }, 320);
+function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
 }
 
-// ─── DOTS ───────────────────────────────────────────────
-function renderDots() {
-  const m = MODES[currentMode];
-  const container = document.getElementById('step-dots');
-  container.innerHTML = '';
-  for(let i=1;i<=m.steps;i++){
-    const wrap = document.createElement('div');
-    wrap.className = 'step-dot-wrap';
-    if(i===m.steps) wrap.style.flex='0';
-    const dot = document.createElement('div');
-    dot.className = 'step-dot' + (m.color==='purple'?' purple-dot':'');
-    if(i < currentStep) dot.classList.add('done');
-    if(i === currentStep) dot.classList.add('active');
-    dot.textContent = i;
-    dot.onclick = (()=>{const n=i;return()=>{if(n<currentStep){currentStep=n;renderStep();}}})();
-    wrap.appendChild(dot);
-    if(i < m.steps){
-      const line = document.createElement('div');
-      line.className = 'step-line' + (i < currentStep ? (m.color==='purple'?' done-purple':' done') : '');
-      wrap.appendChild(line);
+async function runEval() {
+    const btn = document.getElementById('f-submit');
+    const out = document.getElementById('live-result');
+    const agentId = document.getElementById('f-agent').value.trim();
+    const score = parseInt(document.getElementById('f-score').value, 10);
+    const operation = document.getElementById('f-op').value;
+
+    // Client-side validation
+    if (!agentId) {
+        out.innerHTML = '<div class="live-error">Agent ID required.</div>';
+        return;
     }
-    container.appendChild(wrap);
-  }
-  document.getElementById('step-counter').textContent = `Step ${currentStep} of ${m.steps}`;
-  document.getElementById('btn-prev').disabled = currentStep === 1;
-  const nextBtn = document.getElementById('btn-next');
-  if(currentStep === m.steps){
-    nextBtn.textContent = 'Restart ↺';
-    nextBtn.className = 'nav-btn restart';
-    nextBtn.onclick = () => { currentStep=1; renderStep(); };
-  } else {
-    nextBtn.textContent = 'Next →';
-    nextBtn.className = m.color==='purple' ? 'nav-btn primary-purple' : 'nav-btn primary';
-    nextBtn.onclick = nextStep;
-  }
+    if (agentId.length > 31) {
+        out.innerHTML = '<div class="live-error">Agent ID must be ≤ 31 characters (felt252 limit).</div>';
+        return;
+    }
+    if (isNaN(score) || score < 0 || score > 1000) {
+        out.innerHTML = '<div class="live-error">Score must be a number between 0 and 1000.</div>';
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Submitting…';
+    out.innerHTML = '<div class="live-loading">⏳ Calling live API…<br><span style="font-size:11px;opacity:0.6">Signing Starknet transaction if approved</span></div>';
+
+    try {
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ agentId, score, operation })
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) {
+            out.innerHTML = `<div class="live-error">${esc(data.error || 'Request failed (HTTP ' + res.status + ')')}</div>`;
+            return;
+        }
+        renderResult(data);
+    } catch (err) {
+        out.innerHTML = `<div class="live-error">Network error: ${esc(err.message)}</div>`;
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Evaluate →';
+    }
 }
 
-function prevStep(){ if(currentStep>1){currentStep--;renderStep();} }
-function nextStep(){ const m=MODES[currentMode]; if(currentStep<m.steps){currentStep++;renderStep();} }
+function renderResult(data) {
+    const out = document.getElementById('live-result');
 
-// ─── MODE SWITCH ────────────────────────────────────────
-function setMode(mode) {
-  currentMode = mode;
-  currentStep = 1;
-  ['discover','supervised','auto'].forEach(k=>{
-    document.getElementById('tab-'+k).classList.remove('active');
-  });
-  document.getElementById('tab-'+mode).classList.add('active');
-  document.getElementById('terminal-title').textContent = MODES[mode].title;
-  document.getElementById('terminal-body').innerHTML = '';
-  renderStep();
-  addLog('agent','AGENT',`Mode: ${mode.toUpperCase()}`, mode==='auto'?'purple':'teal');
-}
+    const votesHTML = (data.validators || []).map(v =>
+        `<span class="validator-chip ${v.approved ? 'approved' : 'denied'}">${esc(v.validator)} ${v.approved ? '✓' : '✗'}</span>`
+    ).join('');
 
-// ─── STEP RENDERERS ─────────────────────────────────────
-function renderStep() {
-  renderDots();
-  const body = document.getElementById('stage-body');
-  body.innerHTML = '';
-  if(currentMode === 'discover') renderDiscover(body);
-  else if(currentMode === 'supervised') renderSupervised(body);
-  else renderAuto(body);
-}
+    const verdictHTML = data.approved
+        ? '<span class="verdict-chip approved">APPROVED</span>'
+        : '<span class="verdict-chip denied">DENIED</span>';
 
-function renderDiscover(body) {
-  const step = currentStep;
-  if(step===1) {
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num">Step 1 · Platform Scan</div>
-        <div class="step-title">Agent scans platform registry</div>
-      </div>
-      <div class="info-card">
-        <div class="ic-row"><span class="ic-label">Agent</span><span class="ic-val teal">agt_aurora_3f9a</span></div>
-        <div class="ic-row"><span class="ic-label">Intent</span><span class="ic-val">Security Token Investment</span></div>
-        <div class="ic-row"><span class="ic-label">Budget</span><span class="ic-val">€ 5,000 EURC</span></div>
-        <div class="ic-row"><span class="ic-label">Region</span><span class="ic-val">EU · MiCA Jurisdiction</span></div>
-      </div>
-      <ul class="check-list" id="cl1">
-        <li id="c1-1">Scanning investment platforms...</li>
-        <li id="c1-2">Filtering: MiCA-compliant only</li>
-        <li id="c1-3">Match found: tokenforge (Score 920)</li>
-      </ul>
-    </div>`;
-    [100,500,900].forEach((t,i)=>{
-      setTimeout(()=>{
-        const el=document.getElementById(`c1-${i+1}`);
-        if(el){el.classList.add('show');setTimeout(()=>el.classList.add('ok'),200);}
-      },t);
-    });
-    queueLogs([
-      ['agent','AGENT','agt_aurora_3f9a initialised','teal'],
-      ['agent','AGENT','intent: Security Token Investment · €5,000','dim'],
-      ['verun','VERUN','scanning platform registry...','purple'],
-      ['verun','VERUN','filter: MiCA-compliant · EU jurisdiction','dim'],
-      ['ok','MATCH','tokenforge → score: 920 · VERIFIED','green'],
-    ]);
-  }
-  if(step===2) {
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num">Step 2 · Verun Validation</div>
-        <div class="step-title">tokenforge platform validated</div>
-      </div>
-      <div class="info-card">
-        <div class="ic-row"><span class="ic-label">Platform</span><span class="ic-val teal">tokenforge</span></div>
-        <div class="ic-row"><span class="ic-label">Trust Score</span><span class="ic-val" style="color:var(--teal);font-size:17px;font-weight:700">920 / 1000</span></div>
-        <div class="ic-row"><span class="ic-label">Type</span><span class="ic-val">Security Token · Investment</span></div>
-        <div class="ic-row"><span class="ic-label">Compliance</span><span class="ic-val green">eWpG · BaFin · MiFID II</span></div>
-      </div>
-      <div class="score-bar-wrap">
-        <div class="score-bar-label"><span style="font-size:11px;color:var(--text3)">Platform Trust</span><span style="font-size:11px;color:var(--teal)">920</span></div>
-        <div class="score-bar-bg"><div class="score-bar-fill teal" id="bar1" style="width:0%"></div></div>
-      </div>
-      <div class="code-block"><span class="k">"platform"</span>: <span class="s">"tokenforge"</span>,
-<span class="k">"score"</span>:     <span class="v">920</span>,
-<span class="k">"tier"</span>:      <span class="v">"VERIFIED"</span>,
-<span class="k">"validator_consensus"</span>: <span class="v">3</span>/<span class="v">3</span>,
-<span class="k">"mica"</span>:      <span class="s">"Art.68 · Art.72 · Art.75"</span></div>
-    </div>`;
-    setTimeout(()=>{ const b=document.getElementById('bar1'); if(b) b.style.width='92%'; },200);
-    queueLogs([
-      ['verun','VERUN','validating tokenforge...','purple'],
-      ['verun','VERUN','Val-EU-01 → VERIFIED (eWpG confirmed)','dim'],
-      ['verun','VERUN','Val-Neutral-02 → VERIFIED (AML clear)','dim'],
-      ['verun','VERUN','Val-tokenforge → VERIFIED (self-attested)','dim'],
-      ['ok','OK','consensus 3/3 · score: 920 · MiCA compliant','green'],
-    ]);
-  }
-  if(step===3) {
-    const txid = 'ALGO'+Math.random().toString(36).substr(2,36).toUpperCase();
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num">Step 3 · Agent Referral</div>
-        <div class="step-title">Agent refers tokenforge to human</div>
-      </div>
-      <div class="verdict-box approved">
-        <div class="verdict-icon">📨</div>
-        <div class="verdict-title green">Referral sent to human</div>
-        <div class="verdict-sub green">tokenforge recommended · awaiting human decision</div>
-      </div>
-      <div class="code-block"><span class="k">"to"</span>:       <span class="s">"human_rafael"</span>,
-<span class="k">"from"</span>:     <span class="s">"agt_aurora_3f9a"</span>,
-<span class="k">"platform"</span>: <span class="s">"tokenforge"</span>,
-<span class="k">"action"</span>:   <span class="s">"invest €5,000 EURC"</span>,
-<span class="k">"score"</span>:    <span class="v">920</span>,
-<span class="k">"status"</span>:   <span class="s">"awaiting_approval"</span></div>
-      <div class="tx-box">
-        <div class="tx-label">Starknet Anchor · Referral TX</div>
-        <div class="tx-hash">${txid.substr(0,28)}...</div>
-        <div class="tx-link">↗ AlgoExplorer Testnet</div>
-      </div>
-      <div class="progress-wrap"><div class="progress-fill teal" id="prog3"></div></div>
-    </div>`;
-    setTimeout(()=>{const p=document.getElementById('prog3');if(p)p.style.width='100%';},100);
-    queueLogs([
-      ['agent','AGENT','preparing referral for human_rafael...','teal'],
-      ['agent','AGENT','attached: score 920 · MiCA proof · fee model','dim'],
-      ['tx','TX','anchoring referral on Starknet...','teal'],
-      ['tx','TX',`txID: ${txid.substr(0,20)}...`,'dim'],
-      ['ok','OK','referral anchored · awaiting human approval','green'],
-    ]);
-  }
-}
+    let anchorHTML = '';
+    if (data.starknet) {
+        const isLive = data.starknet.mode === 'live';
+        const hash = data.starknet.transactionHash;
+        const voyagerUrl = `https://sepolia.voyager.online/tx/${esc(hash)}`;
+        const modeLabel = isLive ? 'LIVE' : 'MOCK';
 
-function renderSupervised(body) {
-  const step = currentStep;
-  if(step===1) {
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num">Step 1 · Referral Received</div>
-        <div class="step-title">Human receives agent recommendation</div>
-      </div>
-      <div class="human-action">
-        <div class="ha-label">👤 Human Dashboard · Notification</div>
-        <div class="ha-msg">Your agent <strong>agt_aurora_3f9a</strong> recommends investing <strong>€5,000 EURC</strong> via <strong>tokenforge</strong>.<br><br>Platform Trust Score: <strong style="color:var(--teal)">920/1000</strong> · MiCA-compliant · eWpG verified.</div>
-      </div>
-      <div class="info-card">
-        <div class="ic-row"><span class="ic-label">Platform</span><span class="ic-val teal">tokenforge · tokenforge.io</span></div>
-        <div class="ic-row"><span class="ic-label">Action</span><span class="ic-val">Invest €5,000 EURC</span></div>
-        <div class="ic-row"><span class="ic-label">Risk Tier</span><span class="ic-val green">LOW (Score 920)</span></div>
-        <div class="ic-row"><span class="ic-label">Verun Verdict</span><span class="ic-val green">VERIFIED · 3/3 Validators</span></div>
-      </div>
-    </div>`;
-    queueLogs([
-      ['human','HUMAN','referral received from agt_aurora_3f9a','amber'],
-      ['human','HUMAN','platform: tokenforge · action: invest €5k','dim'],
-      ['verun','VERUN','verun verdict attached: VERIFIED (920)','purple'],
-      ['human','HUMAN','awaiting human decision...','amber'],
-    ]);
-  }
-  if(step===2) {
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num">Step 2 · Human Review</div>
-        <div class="step-title">Human approves or denies</div>
-      </div>
-      <div class="human-action">
-        <div class="ha-label">👤 Your Decision</div>
-        <div class="ha-msg">Approve this one-time transaction — or grant <strong>Autonomous Mode</strong> to let the agent execute future tokenforge investments automatically within your policy.</div>
-        <div class="ha-btns">
-          <button class="ha-btn approve" onclick="humanApprove(false)">✓ Approve Once</button>
-          <button class="ha-btn approve" style="background:var(--purple);color:#fff" onclick="humanApprove(true)">⚡ Grant Auto Mode</button>
-          <button class="ha-btn deny" onclick="humanDeny()">✗ Deny</button>
+        anchorHTML = `
+            <div class="anchor-box ${isLive ? 'live' : 'mock'}">
+                <div class="anchor-header">
+                    <span>Starknet Anchor</span>
+                    <span class="mode-pill ${isLive ? 'live' : 'mock'}">${modeLabel}</span>
+                </div>
+                <div class="anchor-hash">${esc(hash)}</div>
+                <a href="${voyagerUrl}" target="_blank" rel="noopener" class="anchor-link">↗ View on Voyager</a>
+                ${data.starknet.anchorError ? `<div class="anchor-error">⚠ ${esc(data.starknet.anchorError)}</div>` : ''}
+            </div>
+        `;
+    }
+
+    out.innerHTML = `
+        <div class="result-box">
+            <div class="result-row">
+                <span class="result-label">Required score</span>
+                <span class="result-value">${data.requiredScore}</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Meets threshold</span>
+                <span class="result-value">${data.meetsThreshold ? '✓ yes' : '✗ no'}</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Validators</span>
+                <span class="result-votes">${votesHTML}</span>
+            </div>
+            <div class="result-row">
+                <span class="result-label">Consensus</span>
+                <span class="result-value">${data.consensusReached ? '✓ ≥ 2 of 3' : '✗ < 2 of 3'}</span>
+            </div>
+            <div class="result-row verdict-row">
+                <span class="result-label">Verdict</span>
+                ${verdictHTML}
+            </div>
+            ${anchorHTML}
         </div>
-      </div>
-      <div id="decision-result"></div>
-    </div>`;
-    queueLogs([
-      ['human','HUMAN','reviewing recommendation...','amber'],
-      ['verun','VERUN','options: approve once · grant auto mode · deny','purple'],
-    ]);
-  }
-  if(step===3) {
-    const txid = 'ALGO'+Math.random().toString(36).substr(2,36).toUpperCase();
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num">Step 3 · Decision Anchored</div>
-        <div class="step-title">Approval recorded on Starknet</div>
-      </div>
-      <div class="verdict-box approved">
-        <div class="verdict-icon">✅</div>
-        <div class="verdict-title green">Transaction Executed · Approved</div>
-        <div class="verdict-sub green">€5,000 EURC → tokenforge · anchored on-chain</div>
-      </div>
-      <div class="tx-box">
-        <div class="tx-label">Starknet Anchor · Approval TX</div>
-        <div class="tx-hash">${txid.substr(0,28)}...</div>
-        <div class="tx-link">↗ AlgoExplorer Testnet</div>
-      </div>
-      <div class="progress-wrap"><div class="progress-fill teal" id="prog-s3"></div></div>
-    </div>`;
-    setTimeout(()=>{const p=document.getElementById('prog-s3');if(p)p.style.width='100%';},100);
-    queueLogs([
-      ['human','HUMAN','approved: invest €5,000 EURC on tokenforge','amber'],
-      ['tx','TX','anchoring approval on Starknet...','teal'],
-      ['ok','OK','approval anchored · ~3.6s','green'],
-      ['ok','OK','transaction executed · MiCA audit trail complete','green'],
-    ]);
-  }
+    `;
 }
-
-function humanApprove(autoMode) {
-  const r = document.getElementById('decision-result');
-  if(!r) return;
-  if(autoMode) {
-    r.innerHTML = `<div class="verdict-box auto"><div class="verdict-icon">⚡</div><div class="verdict-title purple">Autonomous Mode Granted</div><div class="verdict-sub purple">Agent can now execute tokenforge investments automatically within policy</div></div>`;
-    addLog('human','HUMAN','granted: AUTONOMOUS MODE for tokenforge','amber');
-    addLog('verun','VERUN','policy stored on Starknet · agent unlocked','purple');
-  } else {
-    r.innerHTML = `<div class="verdict-box approved"><div class="verdict-icon">✅</div><div class="verdict-title green">One-time Approval Granted</div><div class="verdict-sub green">Executing: €5,000 EURC → tokenforge</div></div>`;
-    addLog('human','HUMAN','approved: one-time transaction','amber');
-  }
-}
-function humanDeny() {
-  const r = document.getElementById('decision-result');
-  if(!r) return;
-  r.innerHTML = `<div style="background:var(--red-dim);border:1px solid rgba(255,77,106,0.25);border-radius:10px;padding:14px;text-align:center"><div style="font-size:22px;margin-bottom:6px">🚫</div><div style="font-size:13px;font-weight:700;color:var(--red)">Transaction Denied</div></div>`;
-  addLog('human','HUMAN','denied: transaction blocked by human','amber');
-  addLog('verun','VERUN','denial anchored on Starknet','purple');
-}
-
-function renderAuto(body) {
-  const step = currentStep;
-  if(step===1) {
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num" style="color:var(--purple)">Step 1 · Policy Loaded</div>
-        <div class="step-title">Autonomous mode active</div>
-      </div>
-      <div class="verdict-box auto">
-        <div class="verdict-icon">⚡</div>
-        <div class="verdict-title purple">Autonomous Mode Active</div>
-        <div class="verdict-sub purple">Human pre-approved · policy enforced by Verun</div>
-      </div>
-      <div class="info-card">
-        <div class="ic-row"><span class="ic-label">Agent</span><span class="ic-val purple">agt_aurora_3f9a</span></div>
-        <div class="ic-row"><span class="ic-label">Platform</span><span class="ic-val teal">tokenforge</span></div>
-        <div class="ic-row"><span class="ic-label">Max per TX</span><span class="ic-val">€ 10,000 EURC</span></div>
-        <div class="ic-row"><span class="ic-label">Revokable</span><span class="ic-val green">Yes · anytime</span></div>
-      </div>
-    </div>`;
-    queueLogs([
-      ['auto','AUTO','autonomous mode loaded','purple'],
-      ['auto','AUTO','policy: tokenforge · max €10,000/tx · EURC','dim'],
-      ['verun','VERUN','policy anchor confirmed on Starknet','purple'],
-      ['auto','AUTO','agent agt_aurora_3f9a ready to execute','teal'],
-    ]);
-  }
-  if(step===2) {
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num" style="color:var(--purple)">Step 2 · Auto Execute</div>
-        <div class="step-title">Agent executes without human input</div>
-      </div>
-      <ul class="check-list" id="cl-auto">
-        <li id="ca-1">Policy check: tokenforge · €3,200 EURC ✓</li>
-        <li id="ca-2">Verun score re-validated: 920 (cached 4h)</li>
-        <li id="ca-3">x402 micro-fee paid · access granted</li>
-        <li id="ca-4">Transaction initiated on tokenforge Chain API</li>
-        <li id="ca-5">Settlement: EURC → tokenforge wallet</li>
-      </ul>
-    </div>`;
-    [0,350,700,1050,1400].forEach((t,i)=>{
-      setTimeout(()=>{
-        const el=document.getElementById(`ca-${i+1}`);
-        if(el){el.classList.add('show');setTimeout(()=>el.classList.add('ok-purple'),200);}
-      },t);
-    });
-    queueLogs([
-      ['auto','AUTO','executing: invest €3,200 EURC on tokenforge','purple'],
-      ['verun','VERUN','policy check: within bounds','dim'],
-      ['verun','VERUN','score cache: 920 · valid 4h · skip re-eval','dim'],
-      ['auto','AUTO','x402 fee paid · tokenforge API called','teal'],
-      ['ok','OK','transaction initiated · no human required','green'],
-    ]);
-  }
-  if(step===3) {
-    const txid = 'ALGO'+Math.random().toString(36).substr(2,36).toUpperCase();
-    body.innerHTML = `<div class="anim-in">
-      <div class="step-header">
-        <div class="step-num" style="color:var(--purple)">Step 3 · On-Chain Proof</div>
-        <div class="step-title">Execution anchored · human can review</div>
-      </div>
-      <div class="verdict-box auto">
-        <div class="verdict-icon">⛓️</div>
-        <div class="verdict-title purple">Autonomous TX Complete</div>
-        <div class="verdict-sub purple">Anchored on Starknet · human notified</div>
-      </div>
-      <div class="tx-box">
-        <div class="tx-label">Starknet Anchor · Auto Execution TX</div>
-        <div class="tx-hash">${txid.substr(0,28)}...</div>
-        <div class="tx-link">↗ AlgoExplorer Testnet</div>
-      </div>
-      <div class="info-card" style="margin-top:10px">
-        <div class="ic-row"><span class="ic-label">Human notified</span><span class="ic-val green">Yes · push notification</span></div>
-        <div class="ic-row"><span class="ic-label">Revoke anytime</span><span class="ic-val amber">Yes · single action</span></div>
-        <div class="ic-row"><span class="ic-label">Next auto TX</span><span class="ic-val purple">Scheduled · policy-bound</span></div>
-      </div>
-      <div class="progress-wrap"><div class="progress-fill purple" id="prog-a3"></div></div>
-    </div>`;
-    setTimeout(()=>{const p=document.getElementById('prog-a3');if(p)p.style.width='100%';},100);
-    queueLogs([
-      ['tx','TX','anchoring execution on Starknet...','teal'],
-      ['tx','TX',`txID: ${txid.substr(0,20)}...`,'dim'],
-      ['ok','OK','anchored · ~3.6s · audit trail complete','green'],
-      ['auto','AUTO','human notified · next execution scheduled','purple'],
-    ]);
-  }
-}
-
-// ─── INIT ────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  renderStep();
-  addLog('verun','VERUN','Verun Protocol online · Starknet Testnet','teal');
-  addLog('verun','VERUN','Select a mode to begin demo','dim');
-});
-</script>
-</body>
+</script></body>
 </html>
