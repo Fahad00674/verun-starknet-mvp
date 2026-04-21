@@ -1,4 +1,8 @@
-import validators from '../src/validators.json';
+const validators = [
+  { name: "tokenforge", weight: 1, type: "founding" },
+  { name: "validator_2", weight: 1, type: "community" },
+  { name: "validator_3", weight: 1, type: "community" }
+];
 
 async function evaluateScore(agentId, score, operation) {
     const gates = {
@@ -41,7 +45,7 @@ async function anchorToStarknet(agentId, score) {
     
     return {
         network: 'Starknet Sepolia',
-        contractAddress: process.env.CONTRACT_ADDRESS,
+        contractAddress: process.env.CONTRACT_ADDRESS || 'Not deployed',
         transactionHash: mockTxHash,
         explorer: `https://sepolia.starkscan.co/tx/${mockTxHash}`,
         timestamp: new Date().toISOString()
