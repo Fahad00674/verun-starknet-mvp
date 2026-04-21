@@ -1,53 +1,87 @@
-import { Account, RpcProvider, Contract, cairo, hash } from 'starknet';
+import { Account, RpcProvider, json } from 'starknet';
 import * as dotenv from 'dotenv';
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-async function deployContract() {
-    console.log('🚀 Starting Starknet contract deployment...\n');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.join(__dirname, '..');
+const ARTIFACTS = path.join(ROOT, 'src_cairo/target/dev');
 
-    // Setup provider
-    const provider = new RpcProvider({ 
-        nodeUrl: process.env.STARKNET_RPC_URL 
+// DRPC load-balances across backends — some lack certain methods.
+// Retry on -32601 (method not found) which indicates a bad backend route.
+const origFetch = globalThis.fetch;
+globalThis.fetch = async (url, opts) => {
+    for (let i = 0; i < 40; i++) {
+        const resp = await origFetch(url, opts);
+        const text = await resp.clone().text();
+        const data = JSON.parse(text);
+        if (data?.error?.code === -32601) {
+            await new Promise(r => setTimeout(r, 500));
+            continue;
+        }
+        return new Response(text, { status: resp.status, headers: resp.headers });
+    }
+    return origFetch(url, opts);
+};
+
+async function deploy() {
+    console.log('🚀 Verun Starknet Deployment — Sepolia Testnet\n');
+
+    const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
+    const account = new Account({
+        provider,
+        address: process.env.STARKNET_ACCOUNT_ADDRESS,
+        signer: process.env.STARKNET_PRIVATE_KEY,
     });
 
-    // Setup account
-    const account = new Account(
-        provider,
-        process.env.STARKNET_ACCOUNT_ADDRESS,
-        process.env.STARKNET_PRIVATE_KEY
-    );
+    console.log('📍 Account:', process.env.STARKNET_ACCOUNT_ADDRESS);
 
-    console.log('✅ Account connected:', process.env.STARKNET_ACCOUNT_ADDRESS);
+    const trustSierra = json.parse(fs.readFileSync(path.join(ARTIFACTS, 'verun_contracts_TrustScore.contract_class.json'), 'utf8'));
+    const trustCasm   = json.parse(fs.readFileSync(path.join(ARTIFACTS, 'verun_contracts_TrustScore.compiled_contract_class.json'), 'utf8'));
+    const valSierra   = json.parse(fs.readFileSync(path.join(ARTIFACTS, 'verun_contracts_ValidatorRegistry.contract_class.json'), 'utf8'));
+    const valCasm     = json.parse(fs.readFileSync(path.join(ARTIFACTS, 'verun_contracts_ValidatorRegistry.compiled_contract_class.json'), 'utf8'));
 
-    // For this MVP, we'll use a pre-compiled contract class hash
-    // In production, you'd compile the Cairo contract first
-    const contractClassHash = "0x00000000000000000000000000000000000000000000000000000000TRUSTSCORE";
-    
-    console.log('📝 Contract class hash:', contractClassHash);
-    console.log('\n⚠️  Note: This is a simplified deployment for MVP');
-    console.log('    In production, compile Cairo contract with `scarb build`\n');
+    console.log('\n📋 Declaring & deploying TrustScore...');
+    const trustResult = await account.declareAndDeploy({
+        contract: trustSierra,
+        casm: trustCasm,
+        constructorCalldata: [process.env.STARKNET_ACCOUNT_ADDRESS],
+    });
+    await provider.waitForTransaction(trustResult.deploy.transaction_hash);
+    const trustAddress = trustResult.deploy.contract_address;
+    console.log('✅ TrustScore:', trustAddress);
+    console.log('   https://sepolia.starkscan.co/contract/' + trustAddress);
 
-    // For now, we'll simulate deployment and create a mock contract address
-    const mockContractAddress = '0x' + Math.random().toString(16).substring(2, 66);
-    
-    console.log('✅ Mock contract deployed at:', mockContractAddress);
-    console.log('\n📄 Updating .env file with contract address...');
+    console.log('\n📋 Declaring & deploying ValidatorRegistry...');
+    const valResult = await account.declareAndDeploy({
+        contract: valSierra,
+        casm: valCasm,
+        constructorCalldata: [process.env.STARKNET_ACCOUNT_ADDRESS],
+    });
+    await provider.waitForTransaction(valResult.deploy.transaction_hash);
+    const valAddress = valResult.deploy.contract_address;
+    console.log('✅ ValidatorRegistry:', valAddress);
+    console.log('   https://sepolia.starkscan.co/contract/' + valAddress);
 
-    // Update .env file
-    let envContent = fs.readFileSync('.env', 'utf8');
-    envContent = envContent.replace(/CONTRACT_ADDRESS=.*/, `CONTRACT_ADDRESS=${mockContractAddress}`);
-    fs.writeFileSync('.env', envContent);
+    // Update .env
+    let env = fs.readFileSync(path.join(ROOT, '.env'), 'utf8');
+    env = env
+        .replace(/TRUST_SCORE_ADDRESS=.*/, `TRUST_SCORE_ADDRESS=${trustAddress}`)
+        .replace(/VALIDATOR_REGISTRY_ADDRESS=.*/, `VALIDATOR_REGISTRY_ADDRESS=${valAddress}`)
+        .replace(/CONTRACT_ADDRESS=.*/, `CONTRACT_ADDRESS=${trustAddress}`);
+    fs.writeFileSync(path.join(ROOT, '.env'), env);
 
-    console.log('✅ .env file updated!');
-    console.log('\n🎉 Deployment complete!');
-    console.log('\nNext steps:');
-    console.log('1. Run: npm run dev');
-    console.log('2. Test API at: http://localhost:3010/api/health');
-    console.log('3. Deploy to Vercel');
-    
-    return mockContractAddress;
+    console.log('\n✅ .env updated');
+    console.log('\n🎉 Done!\n');
+    console.log('   TrustScore:        ', trustAddress);
+    console.log('   ValidatorRegistry: ', valAddress);
+    console.log('\n   Run: npm run dev');
 }
 
-deployContract().catch(console.error);
+deploy().catch(err => {
+    console.error('\n❌ Failed:', err.message || err);
+    process.exit(1);
+});

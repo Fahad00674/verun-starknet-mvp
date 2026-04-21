@@ -1,8 +1,1 @@
-{
-  "version": 2,
-  "functions": {
-    "api/**/*.js": {
-      "includeFiles": "src/**"
-    }
-  }
-}
+{ "version": 2 }
