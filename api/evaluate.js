@@ -51,18 +51,16 @@ function isChainConfigured() {
     );
 }
 
-// Reuse across warm invocations to avoid per-request RPC handshake.
-let _account = null;
+// Build a fresh Account per request. starknet.js v8 caches nonce on the
+// Account object; reusing one across warm invocations causes NonceTooOld
+// after the first successful tx.
 function getAccount() {
-    if (_account) return _account;
     const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
-    // starknet.js v8.9.x Account takes an options object, not positional args.
-    _account = new Account({
+    return new Account({
         provider,
         address: process.env.STARKNET_ACCOUNT_ADDRESS,
         signer: process.env.STARKNET_PRIVATE_KEY,
     });
-    return _account;
 }
 
 async function anchorReal(agentId, score) {
@@ -72,13 +70,8 @@ async function anchorReal(agentId, score) {
         throw new Error('agentId must be a non-empty string ≤31 chars for felt252 encoding');
     }
 
-    const account = getAccount();
     const timestamp = BigInt(Math.floor(Date.now() / 1000));
-
-    // Submit tx but do NOT waitForTransaction — Vercel serverless has tight
-    // timeouts and Starknet confirmations take 10-30s. Return the submitted
-    // hash immediately; caller can poll Starkscan.
-    const { transaction_hash } = await account.execute({
+    const call = {
         contractAddress: process.env.CONTRACT_ADDRESS,
         entrypoint: 'record_score',
         calldata: CallData.compile({
@@ -86,16 +79,41 @@ async function anchorReal(agentId, score) {
             score: cairo.uint256(score),
             timestamp,
         }),
-    });
-
-    return {
-        network: 'Starknet Sepolia',
-        mode: 'live',
-        contractAddress: process.env.CONTRACT_ADDRESS,
-        transactionHash: transaction_hash,
-        explorer: `https://sepolia.starkscan.co/tx/${transaction_hash}`,
-        timestamp: new Date().toISOString()
     };
+
+    // Submit tx but do NOT waitForTransaction — Vercel serverless has tight
+    // timeouts and Starknet confirmations take 10-30s. Return the submitted
+    // hash immediately; caller can poll the explorer link.
+    //
+    // Parallel requests from the browser (e.g. multiple tabs hitting the
+    // demo in quick succession) race on nonce: each fetches the same chain
+    // state before the first tx has propagated. Retry on NonceTooOld with
+    // jittered backoff; refetch nonce + resubmit with a fresh Account.
+    let lastError;
+    for (let attempt = 0; attempt < 4; attempt++) {
+        const account = getAccount();
+        try {
+            const { transaction_hash } = await account.execute(call);
+            return {
+                network: 'Starknet Sepolia',
+                mode: 'live',
+                contractAddress: process.env.CONTRACT_ADDRESS,
+                transactionHash: transaction_hash,
+                explorer: `https://sepolia.voyager.online/tx/${transaction_hash}`,
+                timestamp: new Date().toISOString(),
+                attempts: attempt + 1,
+            };
+        } catch (err) {
+            lastError = err;
+            const msg = String(err && err.message || err);
+            const retryable = /NonceTooOld|nonce|replacement|Invalid transaction nonce/i.test(msg);
+            if (!retryable) throw err;
+            // Jittered backoff: 250-750ms, then 500-1500ms, then 1-3s.
+            const base = 250 * Math.pow(2, attempt);
+            await new Promise(r => setTimeout(r, base + Math.random() * base));
+        }
+    }
+    throw lastError;
 }
 
 function anchorMock(agentId, score) {

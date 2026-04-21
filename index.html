@@ -661,9 +661,16 @@ async function anchorLive(mode, params){
         linkEl.style.opacity='1';
         linkEl.innerHTML = '<a href="'+voyUrl+'" target="_blank" rel="noopener" style="color:var(--teal);text-decoration:none">↗ View on Voyager</a>';
         if(sn.anchorError){
+            // Backend already retries NonceTooOld. Anything surfaced here is
+            // a persistent failure. Strip verbose RPC params dumps.
+            let clean = String(sn.anchorError).replace(/RPC: \S+ with params \{[^]*?\}\s*/g,'').trim();
+            // Grab last meaningful sentence
+            const m = clean.match(/([^:{}]*(?:NonceTooOld|Invalid transaction|Insufficient|fee|balance|timeout)[^:{}]*)/i);
+            if(m) clean = m[1].trim();
+            if(clean.length > 140) clean = clean.slice(0,140)+'…';
             const err = document.createElement('div');
-            err.style.cssText='font-size:10px;color:#ff8888;margin-top:6px';
-            err.textContent = '⚠ '+sn.anchorError;
+            err.style.cssText='font-size:10px;color:#ff8888;margin-top:6px;line-height:1.4';
+            err.textContent = '⚠ '+clean;
             boxEl.appendChild(err);
         }
     }catch(err){
