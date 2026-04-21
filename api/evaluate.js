@@ -56,11 +56,12 @@ let _account = null;
 function getAccount() {
     if (_account) return _account;
     const provider = new RpcProvider({ nodeUrl: process.env.STARKNET_RPC_URL });
-    _account = new Account(
+    // starknet.js v8.9.x Account takes an options object, not positional args.
+    _account = new Account({
         provider,
-        process.env.STARKNET_ACCOUNT_ADDRESS,
-        process.env.STARKNET_PRIVATE_KEY
-    );
+        address: process.env.STARKNET_ACCOUNT_ADDRESS,
+        signer: process.env.STARKNET_PRIVATE_KEY,
+    });
     return _account;
 }
 
