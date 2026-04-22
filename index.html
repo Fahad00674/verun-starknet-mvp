@@ -236,6 +236,9 @@ a{color:var(--teal);text-decoration:none}
 .platform-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 .platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
 .platform-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:border-color 0.2s}
+a.platform-card-link{display:block;text-decoration:none;color:inherit;cursor:pointer}
+a.platform-card-link:hover{border-color:var(--teal);transform:translateY(-2px);transition:all 0.2s}
+a.platform-card-link:hover .plat-type.soon{color:var(--teal);border-color:var(--teal-border);background:var(--teal-dim)}
 .platform-card:hover{border-color:var(--teal-border)}
 .platform-card.featured{border-color:var(--teal-border);background:var(--card2)}
 .plat-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
@@ -499,19 +502,19 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
           </div>
           <div class="plat-score" style="color:var(--text3)">—</div>
         </div>
-        <div class="plat-desc">Regulated EU advisory firm. First validator in the Verun trust consensus — stakes institutional reputation on every agent evaluation.</div>
+        <div class="plat-desc">Regulated EU advisory firm and venture builder. First validator in the Verun trust consensus — stakes institutional reputation on every agent evaluation.</div>
         <div class="plat-tags">
           <span class="plat-tag">Genesis Validator</span>
           <span class="plat-tag">EU Regulated</span>
           <span class="plat-tag">Advisory</span>
-          <span class="plat-tag">bcpp.io</span>
+          <span class="plat-tag">Venture Building</span>
         </div>
       </div>
-      <div class="platform-card">
+      <a class="platform-card platform-card-link" href="https://www.bcpp.io/contact-us" target="_blank" rel="noopener">
         <div class="plat-header">
           <div>
             <div class="plat-name">Open Slot</div>
-            <div class="plat-type soon">Coming Soon</div>
+            <div class="plat-type soon">Apply →</div>
           </div>
           <div class="plat-score" style="color:var(--text3)">—</div>
         </div>
@@ -521,7 +524,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
           <span class="plat-tag">Custodians</span>
           <span class="plat-tag">Institutional</span>
         </div>
-      </div>
+      </a>
     </div>
   </div>
 </section>
