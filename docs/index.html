@@ -10,321 +10,430 @@
   --bg:#07111F;--bg2:#0a1628;--card:#0f1b30;--border:#1a2842;
   --text:#e6eef9;--text2:#9fb0c8;--text3:#5e7290;
   --teal:#00d4aa;--teal-dim:rgba(0,212,170,0.12);--teal-border:rgba(0,212,170,0.35);
-  --purple:#7b61ff;--amber:#ffb43c;--green:#00d4aa;
+  --purple:#7b61ff;--amber:#ffb43c;--red:#ff6666;
   --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
   --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,sans-serif;
-  --radius:12px;
+  --radius:10px;
+  --nav-h:60px;
+  --sidebar-w:260px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+
 a{color:var(--teal);text-decoration:none}
 a:hover{text-decoration:underline}
-code{font-family:var(--mono);font-size:0.9em;background:var(--bg2);padding:2px 6px;border-radius:4px;color:var(--teal)}
-pre{font-family:var(--mono);font-size:13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;overflow-x:auto;line-height:1.55;margin:12px 0}
-pre code{background:transparent;padding:0;color:var(--text)}
-h1,h2,h3,h4{font-weight:700;letter-spacing:-0.02em;line-height:1.3}
+
+code{font-family:var(--mono);font-size:0.88em;background:var(--bg2);padding:2px 6px;border-radius:4px;color:var(--teal);border:1px solid var(--border);white-space:nowrap}
+pre{font-family:var(--mono);font-size:13px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px 18px;overflow-x:auto;line-height:1.6;margin:14px 0;color:var(--text)}
+pre code{background:transparent;padding:0;border:none;color:var(--text);white-space:pre;font-size:13px}
+
+h1,h2,h3,h4{font-weight:700;letter-spacing:-0.02em;line-height:1.25;color:var(--text)}
 h1{font-size:36px;margin-bottom:16px}
-h2{font-size:26px;margin:48px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-h3{font-size:18px;margin:28px 0 10px;color:var(--text)}
-h4{font-size:15px;margin:20px 0 8px;color:var(--text2);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
-p{margin:12px 0;color:var(--text)}
-ul,ol{margin:12px 0 12px 24px;color:var(--text)}
+h2{font-size:24px;margin:56px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+h3{font-size:18px;margin:32px 0 10px}
+h4{font-size:13px;margin:20px 0 8px;color:var(--text2);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.6px;font-weight:700}
+p{margin:12px 0;color:var(--text2)}
+p strong{color:var(--text);font-weight:600}
+
+ul,ol{margin:12px 0 12px 24px;color:var(--text2)}
 li{margin:6px 0}
-strong{color:var(--text);font-weight:600}
+li strong{color:var(--text);font-weight:600}
+
 hr{border:none;border-top:1px solid var(--border);margin:40px 0}
 
-/* NAV */
-.nav{position:sticky;top:0;background:rgba(7,17,31,0.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:14px 32px;display:flex;align-items:center;justify-content:space-between;z-index:100;gap:16px;flex-wrap:wrap}
-.nav-logo{font-family:var(--sans);font-size:18px;font-weight:700;color:var(--text)}
-.nav-logo .tag{font-size:10px;font-family:var(--mono);color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border);padding:2px 8px;border-radius:6px;letter-spacing:1px;margin-left:6px;vertical-align:middle}
-.nav-links{display:flex;gap:24px;font-size:14px}
-.nav-links a{color:var(--text2);text-decoration:none;transition:color 0.2s}
-.nav-links a:hover{color:var(--teal);text-decoration:none}
-.nav-back{font-family:var(--mono);font-size:12px;color:var(--text3)}
-.nav-back:hover{color:var(--teal)}
+/* ─── TOP NAV ──────────────────────────────────────────── */
+.topnav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
+  background:rgba(7,17,31,0.92);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;z-index:100
+}
+.topnav-left{display:flex;align-items:center;gap:12px}
+.topnav-logo{font-size:17px;font-weight:700;color:var(--text);text-decoration:none}
+.topnav-logo:hover{text-decoration:none}
+.topnav-tag{font-size:10px;font-family:var(--mono);color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border);padding:2px 7px;border-radius:5px;letter-spacing:0.8px;font-weight:700}
+.topnav-right{display:flex;align-items:center;gap:20px;font-size:13px}
+.topnav-right a{color:var(--text2);text-decoration:none}
+.topnav-right a:hover{color:var(--teal);text-decoration:none}
+.sidebar-toggle{display:none;background:transparent;border:1px solid var(--border);color:var(--text2);padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:var(--mono)}
+.sidebar-toggle:hover{border-color:var(--teal);color:var(--teal)}
+@media(max-width:900px){.sidebar-toggle{display:inline-block}}
 
-/* LAYOUT */
-.layout{display:grid;grid-template-columns:240px 1fr;max-width:1280px;margin:0 auto;gap:48px;padding:48px 32px}
-@media(max-width:900px){.layout{grid-template-columns:1fr;gap:24px;padding:24px 20px}}
+/* ─── LAYOUT ──────────────────────────────────────────── */
+.layout{
+  padding-top:var(--nav-h);
+  display:grid;
+  grid-template-columns:var(--sidebar-w) 1fr;
+  min-height:100vh
+}
+.content-wrap{padding:48px 48px 80px;max-width:820px;width:100%;margin:0 auto}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .content-wrap{padding:32px 20px 60px;max-width:100%}
+}
 
-.sidebar{position:sticky;top:100px;align-self:flex-start;height:fit-content;font-size:13px}
-.sidebar-label{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:700;margin-bottom:14px}
-.sidebar-links{display:flex;flex-direction:column;gap:2px;list-style:none;margin:0;padding:0}
-.sidebar-links li{margin:0}
-.sidebar-links a{display:block;padding:8px 12px;border-radius:6px;color:var(--text2);font-size:13px;text-decoration:none;border-left:2px solid transparent;transition:all 0.15s}
-.sidebar-links a:hover{background:var(--card);color:var(--text);text-decoration:none}
-.sidebar-links a.active{color:var(--teal);border-left-color:var(--teal);background:var(--teal-dim)}
+/* ─── SIDEBAR ──────────────────────────────────────────── */
+.sidebar{
+  position:fixed;top:var(--nav-h);left:0;bottom:0;
+  width:var(--sidebar-w);overflow-y:auto;
+  border-right:1px solid var(--border);background:var(--bg);
+  padding:28px 16px 40px
+}
+.sidebar-section{margin-bottom:24px}
+.sidebar-section-title{
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);
+  padding:0 12px;margin-bottom:8px
+}
+.sidebar-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:1px}
+.sidebar-list li{margin:0}
+.sidebar-list a{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:7px 12px;border-radius:6px;
+  color:var(--text2);font-size:13.5px;text-decoration:none;
+  border-left:2px solid transparent;
+  transition:background 0.12s,color 0.12s
+}
+.sidebar-list a:hover{background:var(--card);color:var(--text);text-decoration:none}
+.sidebar-list a.active{color:var(--teal);background:var(--teal-dim);border-left-color:var(--teal);font-weight:600}
+.sidebar-list a .ext{font-size:10px;color:var(--text3);opacity:0.7}
 
-.content{min-width:0}
-.content > section{scroll-margin-top:80px}
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);transition:transform 0.2s;z-index:90}
+  .sidebar.open{transform:translateX(0)}
+}
 
-/* PILLS / BADGES */
-.pill{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:0.5px;text-transform:uppercase}
-.pill-live{background:var(--teal);color:#07111F}
-.pill-next{background:rgba(255,180,60,0.15);color:var(--amber);border:1px solid rgba(255,180,60,0.35)}
-.pill-beta{background:rgba(255,180,60,0.15);color:var(--amber);border:1px solid rgba(255,180,60,0.35)}
+/* ─── CONTENT ──────────────────────────────────────────── */
+.content-wrap section{scroll-margin-top:calc(var(--nav-h) + 16px)}
 
-/* HERO */
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border);padding:5px 12px;border-radius:20px;margin-bottom:20px;text-transform:uppercase;letter-spacing:1px}
-.hero-eyebrow .dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:11px;color:var(--teal);
+  background:var(--teal-dim);border:1px solid var(--teal-border);
+  padding:5px 12px;border-radius:20px;margin-bottom:20px;
+  text-transform:uppercase;letter-spacing:1px;font-weight:700
+}
+.eyebrow .dot{width:6px;height:6px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+.lead{font-size:17px;color:var(--text);line-height:1.7;margin:16px 0 24px}
 
 /* CARDS */
-.info-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin:16px 0}
+.info-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin:16px 0}
 .info-card h4{margin-top:0;color:var(--teal)}
+.info-card > *:last-child{margin-bottom:0}
 
 /* TABLES */
-table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-th{text-align:left;padding:10px 14px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg2)}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:14px 0;background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+th{text-align:left;padding:10px 14px;font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);border-bottom:1px solid var(--border);background:var(--bg2);font-weight:700}
 td{padding:12px 14px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:top}
 tr:last-child td{border-bottom:none}
-td code{font-size:11px;word-break:break-all}
+td code{font-size:11px;word-break:break-all;white-space:normal}
+td strong{color:var(--text)}
 
 /* BETA NOTICE */
-.beta-box{background:rgba(255,180,60,0.06);border:1px solid rgba(255,180,60,0.25);border-radius:8px;padding:14px 18px;margin:20px 0;font-size:13px;color:var(--text2);line-height:1.6}
-.beta-box strong{color:var(--amber);font-family:var(--mono);letter-spacing:0.5px;font-weight:700}
+.beta-box{background:rgba(255,180,60,0.06);border:1px solid rgba(255,180,60,0.25);border-radius:8px;padding:14px 18px;margin:20px 0;font-size:13px;color:var(--text2);line-height:1.65}
+.beta-box strong{color:var(--amber);font-family:var(--mono);letter-spacing:0.5px;font-weight:700;font-size:11px;display:inline-block;margin-bottom:4px}
 
-/* DIAGRAM */
-.diagram{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:16px 0;font-family:var(--mono);font-size:13px;line-height:1.8;color:var(--text);white-space:pre;overflow-x:auto}
+/* PILLS */
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 9px;border-radius:11px;letter-spacing:0.6px;text-transform:uppercase;line-height:1.6}
+.pill-live{background:var(--teal);color:#07111F}
+.pill-next{background:rgba(255,180,60,0.14);color:var(--amber);border:1px solid rgba(255,180,60,0.35)}
 
-/* FLOW DIAGRAM (boxes) */
-.flow-diagram{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px 20px;margin:16px 0;display:flex;align-items:stretch;gap:8px;overflow-x:auto}
-.flow-step{flex:1;min-width:140px;display:flex;flex-direction:column;align-items:center;gap:10px}
-.flow-box{width:100%;padding:16px 12px;border-radius:10px;text-align:center;font-family:var(--mono);font-size:13px;line-height:1.4}
-.flow-box h5{font-size:14px;font-weight:700;margin-bottom:6px;font-family:var(--sans)}
+/* FLOW DIAGRAM */
+.flow{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px 20px;margin:18px 0;
+  display:flex;align-items:stretch;gap:6px;overflow-x:auto
+}
+.flow-step{flex:1;min-width:130px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.flow-box{
+  width:100%;padding:16px 10px;border-radius:10px;text-align:center;
+  font-family:var(--mono);line-height:1.4
+}
+.flow-box h5{font-size:13px;font-weight:700;margin-bottom:4px;font-family:var(--sans)}
 .flow-box small{font-size:10px;opacity:0.75;display:block;font-family:var(--mono)}
 .flow-box.agent{background:rgba(255,180,60,0.1);border:1px solid rgba(255,180,60,0.35);color:var(--amber)}
 .flow-box.verun{background:rgba(123,97,255,0.12);border:1px solid rgba(123,97,255,0.35);color:#b4a3ff}
-.flow-box.platform{background:rgba(0,170,255,0.10);border:1px solid rgba(0,170,255,0.35);color:#7dc7ff}
+.flow-box.platform{background:rgba(0,170,255,0.1);border:1px solid rgba(0,170,255,0.35);color:#7dc7ff}
 .flow-box.chain{background:var(--teal-dim);border:1px solid var(--teal-border);color:var(--teal)}
-.flow-role{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);font-weight:700}
-.flow-arrow{display:flex;align-items:center;color:var(--text3);font-size:22px;padding:0 4px;align-self:center;flex-shrink:0}
-@media(max-width:700px){.flow-diagram{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+.flow-role{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text3);font-weight:700}
+.flow-arrow{display:flex;align-items:center;color:var(--text3);font-size:20px;padding:0 2px;align-self:center;flex-shrink:0}
+@media(max-width:700px){
+  .flow{flex-direction:column;padding:20px 16px}
+  .flow-arrow{transform:rotate(90deg);margin:2px 0}
+}
 
 /* GATES */
-.gates-list{display:flex;flex-direction:column;gap:10px;margin:16px 0}
-.gate-card{display:grid;grid-template-columns:80px 1fr auto;gap:18px;align-items:center;padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:border-color 0.2s}
-.gate-card:hover{border-color:var(--border)}
-.gate-score{font-family:var(--mono);font-size:22px;font-weight:700;text-align:left}
+.gates{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.gate{
+  display:grid;grid-template-columns:76px 1fr auto;gap:20px;align-items:center;
+  padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;
+  transition:border-color 0.15s
+}
+.gate:hover{border-color:var(--teal-border)}
+.gate-score{font-family:var(--mono);font-size:22px;font-weight:700}
 .gate-score.t300{color:var(--teal)}
 .gate-score.t500{color:var(--amber)}
-.gate-score.t600{color:#ff8888}
+.gate-score.t600{color:var(--red)}
 .gate-body h4{font-size:14px;font-weight:700;margin:0 0 4px;color:var(--text);font-family:var(--sans);text-transform:none;letter-spacing:normal}
-.gate-body p{margin:0;font-size:12px;color:var(--text3);font-family:var(--mono);line-height:1.5}
-.gate-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 11px;border-radius:6px;letter-spacing:1px;white-space:nowrap}
+.gate-body p{margin:0;font-size:12px;color:var(--text3);font-family:var(--mono);line-height:1.55}
+.gate-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 10px;border-radius:6px;letter-spacing:1px;white-space:nowrap}
 .gate-badge.t300{color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border)}
 .gate-badge.t500{color:var(--amber);background:rgba(255,180,60,0.12);border:1px solid rgba(255,180,60,0.35)}
-.gate-badge.t600{color:#ff8888;background:rgba(255,80,80,0.10);border:1px solid rgba(255,80,80,0.3)}
-@media(max-width:600px){.gate-card{grid-template-columns:60px 1fr;gap:12px;padding:14px}.gate-badge{grid-column:1/-1;justify-self:start;margin-top:4px}}
+.gate-badge.t600{color:var(--red);background:rgba(255,102,102,0.1);border:1px solid rgba(255,102,102,0.3)}
+@media(max-width:600px){
+  .gate{grid-template-columns:60px 1fr;gap:12px;padding:14px 16px}
+  .gate-badge{grid-column:1/-1;justify-self:start;margin-top:4px}
+}
 
-/* FOOTER */
-footer{margin-top:80px;padding:32px;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
-footer a{color:var(--text2)}
+/* METHOD BADGE (API) */
+.method{
+  display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;
+  padding:3px 9px;border-radius:5px;letter-spacing:0.8px;margin-right:8px;
+  vertical-align:middle
+}
+.method-get{background:rgba(125,199,255,0.12);color:#7dc7ff;border:1px solid rgba(125,199,255,0.35)}
+.method-post{background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border)}
+
+/* FAQ */
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px 20px;margin:10px 0}
+.faq-item h3{margin:0 0 8px;font-size:15px;color:var(--text)}
+.faq-item p{margin:0;color:var(--text2);font-size:14px;line-height:1.65}
+.faq-item p + p{margin-top:8px}
+
+/* PAGE FOOTER */
+.page-footer{margin-top:80px;padding:28px 0;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
+.page-footer a{color:var(--text2);margin:0 6px}
+.page-footer a:hover{color:var(--teal)}
 </style>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-logo">Verun <span class="tag">DOCS</span></div>
-  <div class="nav-links">
-    <a href="#overview">Overview</a>
-    <a href="#architecture">Architecture</a>
-    <a href="#contracts">Contracts</a>
-    <a href="#api">API</a>
-    <a href="#validators">Validators</a>
-    <a href="#roadmap">Roadmap</a>
-    <a href="#faq">FAQ</a>
+<!-- ─── TOP NAV ─────────────────────────────────────────── -->
+<nav class="topnav">
+  <div class="topnav-left">
+    <button class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰ Menu</button>
+    <a class="topnav-logo" href="/">Verun <span class="topnav-tag">DOCS</span></a>
   </div>
-  <a class="nav-back" href="/">← verun-starknet-mvp.vercel.app</a>
+  <div class="topnav-right">
+    <a href="/">← Main site</a>
+    <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">GitHub ↗</a>
+  </div>
 </nav>
 
+<!-- ─── LAYOUT ─────────────────────────────────────────── -->
 <div class="layout">
 
-  <aside class="sidebar">
-    <div class="sidebar-label">On this page</div>
-    <ul class="sidebar-links">
-      <li><a href="#overview" class="active">Overview</a></li>
-      <li><a href="#architecture">Architecture</a></li>
-      <li><a href="#contracts">Smart Contracts</a></li>
-      <li><a href="#api">API Reference</a></li>
-      <li><a href="#validators">Validator Network</a></li>
-      <li><a href="#roadmap">Roadmap</a></li>
-      <li><a href="#faq">FAQ</a></li>
-    </ul>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">Documentation</div>
+      <ul class="sidebar-list" data-scroll-spy>
+        <li><a href="#overview" data-section="overview">Overview</a></li>
+        <li><a href="#architecture" data-section="architecture">Architecture</a></li>
+        <li><a href="#contracts" data-section="contracts">Smart Contracts</a></li>
+        <li><a href="#api" data-section="api">API Reference</a></li>
+        <li><a href="#integration" data-section="integration">tokenforge Integration</a></li>
+        <li><a href="#validators" data-section="validators">Validator Network</a></li>
+        <li><a href="#roadmap" data-section="roadmap">Roadmap</a></li>
+        <li><a href="#faq" data-section="faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">External Resources</div>
+      <ul class="sidebar-list">
+        <li><a href="https://docs.tokenforge.io/tokensuite-docs" target="_blank" rel="noopener">tokenforge TokenSuite Docs <span class="ext">↗</span></a></li>
+        <li><a href="https://sepolia.voyager.online/contract/0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c" target="_blank" rel="noopener">Voyager Explorer <span class="ext">↗</span></a></li>
+        <li><a href="https://book.starknet.io" target="_blank" rel="noopener">Starknet Book <span class="ext">↗</span></a></li>
+        <li><a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">Verun GitHub <span class="ext">↗</span></a></li>
+      </ul>
+    </div>
   </aside>
 
-  <main class="content">
+  <!-- MAIN CONTENT -->
+  <main>
+    <div class="content-wrap">
 
-    <!-- OVERVIEW -->
-    <section id="overview">
-      <div class="hero-eyebrow"><span class="dot"></span>Verun Protocol · Starknet · April 2026</div>
-      <h1>Verun Protocol Documentation</h1>
-      <p>Verun is an <strong>Agent Trust Score Layer</strong> for autonomous agentic finance. Every trust evaluation is anchored on Starknet — producing a tamper-evident audit trail of agent behaviour across platforms.</p>
+      <!-- ═══ OVERVIEW ═══ -->
+      <section id="overview">
+        <div class="eyebrow"><span class="dot"></span>Verun Protocol · Starknet · April 2026</div>
+        <h1>Verun Protocol Documentation</h1>
+        <p class="lead">Verun is an <strong>Agent Trust Score Layer</strong> for autonomous agentic finance. Every trust evaluation is anchored on Starknet, producing a tamper-evident audit trail of agent behaviour across platforms.</p>
 
-      <div class="beta-box">
-        <strong>⚠ BETA NOTICE</strong><br>
-        Early-stage MVP on Starknet Sepolia testnet. Anything shown here — contracts, APIs, validators, design, terminology — can change as the protocol evolves. Testnet-only: addresses and transaction hashes hold no economic value.
-      </div>
-
-      <h3>The problem</h3>
-      <p>AI agents are beginning to transact autonomously with real money — investing, transferring, minting, ordering. But there is no shared trust infrastructure. How do humans verify that a given agent is trustworthy? How do platforms know which agents to accept? How do we audit autonomous decisions after the fact?</p>
-
-      <h3>The solution</h3>
-      <p>Verun provides three things:</p>
-      <ol>
-        <li><strong>A trust score</strong> — bidirectional reputation for agents and platforms</li>
-        <li><strong>A validator consensus</strong> — 2-of-3 approval model for material actions</li>
-        <li><strong>On-chain anchoring</strong> — every approved evaluation written to Starknet for a tamper-evident audit trail</li>
-      </ol>
-
-      <h3>Why Starknet</h3>
-      <ul>
-        <li>Low fees per transaction — suitable for high-volume agent activity</li>
-        <li>Cairo's provable computation — fits trust-verification use cases</li>
-        <li>Maturing ecosystem and tooling</li>
-      </ul>
-    </section>
-
-    <!-- ARCHITECTURE -->
-    <section id="architecture">
-      <h2>Architecture</h2>
-      <p>Verun has three layers: a client-facing HTTP API, a validator consensus engine, and on-chain anchoring in Cairo smart contracts.</p>
-
-      <h3>Flow</h3>
-      <p>Verun acts as the trust middleware between AI agents and on-chain execution. Trust scores require 2-of-3 validator consensus before any score is updated on-chain.</p>
-      <div class="flow-diagram">
-        <div class="flow-step">
-          <div class="flow-box agent">
-            <h5>Agent</h5>
-            <small>AI · Claude · Custom</small>
-          </div>
-          <div class="flow-role">Caller</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box verun">
-            <h5>Verun</h5>
-            <small>Score + Consensus</small>
-          </div>
-          <div class="flow-role">Trust Gate</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box platform">
-            <h5>tokenforge</h5>
-            <small>Chain API Gate</small>
-          </div>
-          <div class="flow-role">Execution</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-step">
-          <div class="flow-box chain">
-            <h5>⛓ Starknet</h5>
-            <small>Anchor + Settlement</small>
-          </div>
-          <div class="flow-role">Settlement</div>
-        </div>
-      </div></div>
-
-      <h3>Request flow</h3>
-      <ol>
-        <li>Client submits an evaluation request with <code>agentId</code>, <code>score</code>, and <code>operation</code></li>
-        <li>API checks the score against the operation's gate threshold (see below)</li>
-        <li>A 2-of-3 validator vote is simulated for consensus</li>
-        <li>If the score clears the gate AND consensus is reached, the API signs a <code>record_score</code> transaction on the TrustScore contract</li>
-        <li>The response returns the validator votes, consensus result, verdict, and (if approved) the real Starknet transaction hash</li>
-      </ol>
-
-      <h3>Trust Score Gates</h3>
-      <p>Every API capability is gated behind a minimum Trust Score. Agents accumulate trust through successful, validator-approved interactions.</p>
-
-      <div class="gates-list">
-        <div class="gate-card">
-          <div class="gate-score t300">300+</div>
-          <div class="gate-body">
-            <h4>Chain API Read Access</h4>
-            <p><code>GET /balance</code> · <code>GET /tokens</code> · <code>GET /positions</code> — wallet read-only</p>
-          </div>
-          <div class="gate-badge t300">READ-ONLY</div>
+        <div class="beta-box">
+          <strong>⚠ BETA NOTICE</strong><br>
+          Early-stage MVP on Starknet Sepolia testnet. Anything shown here — contracts, APIs, validators, design, terminology — can change as the protocol evolves. Testnet-only: addresses and transaction hashes hold no economic value.
         </div>
 
-        <div class="gate-card">
-          <div class="gate-score t500">500+</div>
-          <div class="gate-body">
-            <h4>Mint &amp; Transfer</h4>
-            <p><code>POST /mint</code> · <code>POST /transfer</code> — tokenised securities via tokenforge Chain API</p>
+        <h3>The problem</h3>
+        <p>AI agents are beginning to transact autonomously with real money — investing, transferring, minting, ordering. But there is no shared trust infrastructure. How do humans verify a given agent is trustworthy? How do platforms decide which agents to accept? How do we audit autonomous decisions after the fact?</p>
+
+        <h3>The solution</h3>
+        <p>Verun provides three things:</p>
+        <ol>
+          <li><strong>A trust score</strong> — bidirectional reputation for agents and platforms.</li>
+          <li><strong>Validator consensus</strong> — 2-of-3 approval model for material actions.</li>
+          <li><strong>On-chain anchoring</strong> — every approved evaluation written to Starknet, producing a tamper-evident audit trail.</li>
+        </ol>
+
+        <h3>Why Starknet</h3>
+        <ul>
+          <li><strong>Low fees per transaction</strong> — suitable for high-volume agent activity</li>
+          <li><strong>Cairo's provable computation</strong> — fits trust-verification use cases</li>
+          <li><strong>Maturing ecosystem and tooling</strong> — Voyager, ArgentX, Starknet.js</li>
+        </ul>
+      </section>
+
+      <!-- ═══ ARCHITECTURE ═══ -->
+      <section id="architecture">
+        <h2>Architecture</h2>
+        <p>Verun acts as trust middleware between AI agents and on-chain execution. Trust scores require 2-of-3 validator consensus before any score update is anchored on-chain.</p>
+
+        <h3>Flow</h3>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="flow-box agent">
+              <h5>Agent</h5>
+              <small>AI · Claude · Custom</small>
+            </div>
+            <div class="flow-role">Caller</div>
           </div>
-          <div class="gate-badge t500">MINT / TRANSFER</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-box verun">
+              <h5>Verun</h5>
+              <small>Score + Consensus</small>
+            </div>
+            <div class="flow-role">Trust Gate</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-box platform">
+              <h5>tokenforge</h5>
+              <small>Chain API Gate</small>
+            </div>
+            <div class="flow-role">Execution</div>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-step">
+            <div class="flow-box chain">
+              <h5>⛓ Starknet</h5>
+              <small>Anchor + Settlement</small>
+            </div>
+            <div class="flow-role">Settlement</div>
+          </div>
         </div>
 
-        <div class="gate-card">
-          <div class="gate-score t600">600+</div>
-          <div class="gate-body">
-            <h4>Full Order Management</h4>
-            <p><code>POST /order</code> · <code>PATCH /order</code> — full tokenforge order-engine access</p>
+        <h3>Request flow</h3>
+        <ol>
+          <li>Client submits an evaluation request with <code>agentId</code>, <code>score</code>, and <code>operation</code>.</li>
+          <li>The API checks the score against the operation's gate threshold.</li>
+          <li>A 2-of-3 validator vote is tallied for consensus.</li>
+          <li>If the score clears the gate <strong>and</strong> consensus is reached, the API signs a <code>record_score</code> transaction on the TrustScore contract.</li>
+          <li>The response returns the validator votes, consensus result, verdict, and (if approved) the real Starknet transaction hash.</li>
+        </ol>
+
+        <h3>Trust Score Gates</h3>
+        <p>Every API capability is gated behind a minimum Trust Score. Agents accumulate trust through successful, validator-approved interactions.</p>
+
+        <div class="gates">
+          <div class="gate">
+            <div class="gate-score t300">300+</div>
+            <div class="gate-body">
+              <h4>Chain API Read Access</h4>
+              <p><code>GET /balance</code> · <code>GET /tokens</code> · <code>GET /positions</code> — wallet read-only</p>
+            </div>
+            <div class="gate-badge t300">READ-ONLY</div>
           </div>
-          <div class="gate-badge t600">ORDER MGT.</div>
+
+          <div class="gate">
+            <div class="gate-score t500">500+</div>
+            <div class="gate-body">
+              <h4>Mint &amp; Transfer</h4>
+              <p><code>POST /mint</code> · <code>POST /transfer</code> — tokenised securities via tokenforge Chain API</p>
+            </div>
+            <div class="gate-badge t500">MINT / TRANSFER</div>
+          </div>
+
+          <div class="gate">
+            <div class="gate-score t600">600+</div>
+            <div class="gate-body">
+              <h4>Full Order Management</h4>
+              <p><code>POST /order</code> · <code>PATCH /order</code> — full tokenforge order-engine access</p>
+            </div>
+            <div class="gate-badge t600">ORDER MGT.</div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CONTRACTS -->
-    <section id="contracts">
-      <h2>Smart Contracts</h2>
-      <p>Two Cairo contracts deployed on Starknet Sepolia. Source in <a href="https://github.com/Fahad00674/verun-starknet-mvp/tree/main/src_cairo/src" target="_blank" rel="noopener">src_cairo/src/</a>.</p>
+      <!-- ═══ SMART CONTRACTS ═══ -->
+      <section id="contracts">
+        <h2>Smart Contracts</h2>
+        <p>Two Cairo contracts deployed on Starknet Sepolia. Source: <a href="https://github.com/Fahad00674/verun-starknet-mvp/tree/main/src_cairo/src" target="_blank" rel="noopener">src_cairo/src/</a>.</p>
 
-      <h3>TrustScore</h3>
-      <table>
-        <tbody>
-          <tr><td>Network</td><td>Starknet Sepolia</td></tr>
-          <tr><td>Address</td><td><code>0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c</code></td></tr>
-          <tr><td>Explorer</td><td><a href="https://sepolia.voyager.online/contract/0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c" target="_blank" rel="noopener">Voyager ↗</a></td></tr>
-        </tbody>
-      </table>
+        <h3>TrustScore</h3>
+        <p>Records per-agent score snapshots and emits events for off-chain indexing.</p>
 
-      <h4>Entrypoints</h4>
-      <pre><code>fn record_score(agent_id: felt252, score: u256, timestamp: u64)
-  → owner-only; emits ScoreRecorded event
+        <table>
+          <tbody>
+            <tr><td><strong>Network</strong></td><td>Starknet Sepolia</td></tr>
+            <tr><td><strong>Address</strong></td><td><code>0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c</code></td></tr>
+            <tr><td><strong>Explorer</strong></td><td><a href="https://sepolia.voyager.online/contract/0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c" target="_blank" rel="noopener">Voyager ↗</a></td></tr>
+            <tr><td><strong>Access control</strong></td><td>Owner-only writes; public reads</td></tr>
+          </tbody>
+        </table>
 
-fn get_score(agent_id: felt252) → (u256, u64)
-  → public read; returns (score, timestamp)
-
-fn get_owner() → ContractAddress
-  → public read</code></pre>
-
-      <h4>Events</h4>
-      <pre><code>ScoreRecorded {
-  #[key] agent_id: felt252,
-  score: u256,
-  timestamp: u64,
+        <h4>Interface</h4>
+<pre><code>#[starknet::interface]
+trait ITrustScore&lt;TContractState&gt; {
+    fn record_score(ref self: TContractState, agent_id: felt252, score: u256, timestamp: u64);
+    fn get_score(self: @TContractState, agent_id: felt252) -&gt; (u256, u64);
+    fn get_owner(self: @TContractState) -&gt; starknet::ContractAddress;
 }</code></pre>
 
-      <h3>ValidatorRegistry</h3>
-      <table>
-        <tbody>
-          <tr><td>Network</td><td>Starknet Sepolia</td></tr>
-          <tr><td>Address</td><td><code>0x7e1a6bd567f3e18f62ff36c88eea40f2c6fedf406b8cf999f2bdf01220ea7ac</code></td></tr>
-          <tr><td>Explorer</td><td><a href="https://sepolia.voyager.online/contract/0x7e1a6bd567f3e18f62ff36c88eea40f2c6fedf406b8cf999f2bdf01220ea7ac" target="_blank" rel="noopener">Voyager ↗</a></td></tr>
-        </tbody>
-      </table>
+        <h4>Event</h4>
+<pre><code>#[derive(Drop, starknet::Event)]
+struct ScoreRecorded {
+    #[key] agent_id: felt252,
+    score: u256,
+    timestamp: u64,
+}</code></pre>
 
-      <h4>Entrypoints</h4>
-      <pre><code>fn add_validator(name: felt252, weight: u8, validator_type: felt252)
-fn remove_validator(name: felt252)
-fn get_validator(name: felt252) → (u8, felt252, bool)
-fn get_validator_count() → u32
-fn is_active(name: felt252) → bool</code></pre>
-    </section>
+        <h3>ValidatorRegistry</h3>
+        <p>On-chain registry of named validators with weights and active flags. Seeded with <code>tokenforge</code> (weight 2, founding) in the constructor.</p>
 
-    <!-- API -->
-    <section id="api">
-      <h2>API Reference</h2>
-      <p>Base URL: <code>https://verun-starknet-mvp.vercel.app</code></p>
+        <table>
+          <tbody>
+            <tr><td><strong>Network</strong></td><td>Starknet Sepolia</td></tr>
+            <tr><td><strong>Address</strong></td><td><code>0x7e1a6bd567f3e18f62ff36c88eea40f2c6fedf406b8cf999f2bdf01220ea7ac</code></td></tr>
+            <tr><td><strong>Explorer</strong></td><td><a href="https://sepolia.voyager.online/contract/0x7e1a6bd567f3e18f62ff36c88eea40f2c6fedf406b8cf999f2bdf01220ea7ac" target="_blank" rel="noopener">Voyager ↗</a></td></tr>
+          </tbody>
+        </table>
 
-      <h3>GET <code>/api/health</code></h3>
-      <p>Returns service status.</p>
-      <pre><code>{
+        <h4>Interface</h4>
+<pre><code>#[starknet::interface]
+trait IValidatorRegistry&lt;TContractState&gt; {
+    fn add_validator(ref self: TContractState, name: felt252, weight: u8, validator_type: felt252);
+    fn remove_validator(ref self: TContractState, name: felt252);
+    fn get_validator(self: @TContractState, name: felt252) -&gt; (u8, felt252, bool);
+    fn get_validator_count(self: @TContractState) -&gt; u32;
+    fn is_active(self: @TContractState, name: felt252) -&gt; bool;
+}</code></pre>
+      </section>
+
+      <!-- ═══ API REFERENCE ═══ -->
+      <section id="api">
+        <h2>API Reference</h2>
+        <p>Base URL: <code>https://verun-starknet-mvp.vercel.app</code></p>
+
+        <h3><span class="method method-get">GET</span> <code>/api/health</code></h3>
+        <p>Returns service status.</p>
+        <h4>Response</h4>
+<pre><code>{
   "status": "healthy",
   "service": "Verun Starknet MVP",
   "network": "Sepolia Testnet",
@@ -332,16 +441,16 @@ fn is_active(name: felt252) → bool</code></pre>
   "timestamp": "2026-04-21T10:00:00.000Z"
 }</code></pre>
 
-      <h3>POST <code>/api/score</code></h3>
-      <p>Evaluates a score without writing to chain. Useful for pre-checks.</p>
-      <h4>Request</h4>
-      <pre><code>{
+        <h3><span class="method method-post">POST</span> <code>/api/score</code></h3>
+        <p>Evaluates a score without writing to chain. Useful for pre-checks.</p>
+        <h4>Request body</h4>
+<pre><code>{
   "agentId": "agent-001",
   "score": 650,
   "operation": "transfer"
 }</code></pre>
-      <h4>Response</h4>
-      <pre><code>{
+        <h4>Response</h4>
+<pre><code>{
   "agentId": "agent-001",
   "score": 650,
   "operation": "transfer",
@@ -353,132 +462,233 @@ fn is_active(name: felt252) → bool</code></pre>
   "timestamp": "..."
 }</code></pre>
 
-      <h3>POST <code>/api/evaluate</code></h3>
-      <p>Full evaluation — if approved, submits a real <code>record_score</code> transaction on the TrustScore contract and returns the transaction hash.</p>
-      <h4>Request</h4>
-      <pre><code>{
+        <h3><span class="method method-post">POST</span> <code>/api/evaluate</code></h3>
+        <p>Full evaluation — if approved, submits a real <code>record_score</code> transaction on the TrustScore contract and returns the submitted transaction hash.</p>
+        <h4>Request body</h4>
+<pre><code>{
   "agentId": "agent-001",
   "score": 650,
   "operation": "transfer"
 }</code></pre>
-      <h4>Response</h4>
-      <pre><code>{
+        <h4>Response (approved)</h4>
+<pre><code>{
   "agentId": "agent-001",
   "score": 650,
   "operation": "transfer",
   "requiredScore": 500,
   "meetsThreshold": true,
-  "validators": [ ... ],
+  "validators": [
+    { "validator": "tokenforge",  "weight": 1, "approved": true },
+    { "validator": "validator_2", "weight": 1, "approved": true },
+    { "validator": "validator_3", "weight": 1, "approved": false }
+  ],
   "consensusReached": true,
   "approved": true,
-  "timestamp": "...",
+  "timestamp": "2026-04-21T10:34:48.776Z",
   "starknet": {
     "network": "Starknet Sepolia",
     "mode": "live",
-    "contractAddress": "0x4d1f47e42dab...",
-    "transactionHash": "0x2a155037b2743ca...",
-    "explorer": "https://sepolia.voyager.online/tx/0x..."
+    "contractAddress": "0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c",
+    "transactionHash": "0x2a155037b2743ca52ce5afd3d2df0c4b409b361373b031d0dc372fab2e7d2e",
+    "explorer": "https://sepolia.voyager.online/tx/0x2a155037b2743ca..."
   }
 }</code></pre>
 
-      <h4>Notes</h4>
-      <ul>
-        <li><code>agentId</code> must be ≤ 31 ASCII characters (felt252 limit). Longer IDs should be Poseidon-hashed off-chain before submission.</li>
-        <li>Score must be an integer in the range 0–1000.</li>
-        <li>The API submits the tx and returns the hash without waiting for confirmation. Clients can poll the returned <code>explorer</code> URL.</li>
-        <li>If chain-side env vars are missing or the chain call fails, the response includes <code>"mode": "mock"</code> and an <code>anchorError</code> instead of a real tx.</li>
-      </ul>
-    </section>
+        <h4>Notes</h4>
+        <ul>
+          <li><code>agentId</code> must be ≤ 31 ASCII characters (felt252 limit). Longer IDs should be Poseidon-hashed off-chain before submission.</li>
+          <li><code>score</code> must be an integer in the range 0–1000.</li>
+          <li>The API submits the tx and returns the hash <strong>without</strong> waiting for confirmation. Clients can poll the returned <code>explorer</code> URL.</li>
+          <li>If chain env vars are missing or the chain call fails, the response includes <code>"mode": "mock"</code> and an <code>anchorError</code> instead of a real tx.</li>
+          <li>The backend auto-retries <code>NonceTooOld</code> errors from parallel requests up to four times with jittered backoff.</li>
+        </ul>
+      </section>
 
-    <!-- VALIDATORS -->
-    <section id="validators">
-      <h2>Validator Network</h2>
-      <p>Verun uses a 2-of-3 validator consensus model. A request is approved only when at least two validators approve and the score clears the operation's gate threshold.</p>
+      <!-- ═══ TOKENFORGE INTEGRATION ═══ -->
+      <section id="integration">
+        <h2>tokenforge Integration</h2>
+        <p>Verun sits above tokenforge's TokenSuite as the <strong>trust gate</strong> for agent-initiated actions. tokenforge provides the white-label STO execution layer; Verun provides the trust attestation anchored on Starknet.</p>
 
-      <h3>Current validators</h3>
-      <table>
-        <thead><tr><th>Validator</th><th>Role</th><th>Status</th></tr></thead>
-        <tbody>
-          <tr><td>tokenforge</td><td>Founding Validator · Platform</td><td><span class="pill pill-live">Live</span></td></tr>
-          <tr><td>BCP Partners</td><td>Genesis Validator · Advisory / Venture Building</td><td><span class="pill pill-live">Live</span></td></tr>
-          <tr><td>Open Slot</td><td>Institutional slot — banks, custodians, compliance partners</td><td><span class="pill pill-next">Apply</span></td></tr>
-        </tbody>
-      </table>
+        <div class="info-card">
+          <h4>Division of responsibility</h4>
+          <ul style="margin:8px 0 0 20px">
+            <li><strong>Verun</strong> — evaluates agent trust score, runs validator consensus, anchors the approved evaluation on Starknet.</li>
+            <li><strong>tokenforge TokenSuite</strong> — executes the operation (mint, transfer, order) on its regulated Chain API, using Cashlink for crypto-securities registry and custody.</li>
+          </ul>
+        </div>
 
-      <p>The <code>tokenforge</code> validator is seeded directly in the <code>ValidatorRegistry</code> contract's constructor with a founding weight. Additional validators are added via <code>add_validator</code> (owner-only).</p>
-    </section>
+        <h3>Integration pattern</h3>
+        <ol>
+          <li>Agent wants to call a tokenforge Chain API endpoint (e.g. <code>POST /transfer</code>).</li>
+          <li>Agent first calls Verun's <code>POST /api/evaluate</code> with its <code>agentId</code>, current <code>score</code>, and the intended <code>operation</code>.</li>
+          <li>Verun checks the operation gate and runs validator consensus.</li>
+          <li>On approval, Verun anchors the attestation on Starknet and returns the transaction hash.</li>
+          <li>Agent forwards the Verun attestation (tx hash + response) to tokenforge's Chain API alongside its request.</li>
+          <li>tokenforge verifies the Verun attestation and executes the requested operation.</li>
+        </ol>
 
-    <!-- ROADMAP -->
-    <section id="roadmap">
-      <h2>Roadmap</h2>
+        <h3>Reference</h3>
+        <p>See the tokenforge TokenSuite documentation for Chain API endpoints, authentication, and emission workflows:</p>
+        <p><a href="https://docs.tokenforge.io/tokensuite-docs" target="_blank" rel="noopener">docs.tokenforge.io/tokensuite-docs ↗</a></p>
 
-      <h3>Live today <span class="pill pill-live">Live</span></h3>
-      <ul>
-        <li>Cairo TrustScore + ValidatorRegistry contracts deployed on Starknet Sepolia</li>
-        <li>Live API submits real on-chain transactions for every approved evaluation</li>
-        <li>Validators registered on-chain via the ValidatorRegistry contract</li>
-        <li>Operation-level gate thresholds enforced in evaluation logic</li>
-        <li>Open source repository on GitHub</li>
-      </ul>
+        <div class="beta-box">
+          <strong>STATUS · IN DESIGN</strong><br>
+          The end-to-end handshake between Verun attestation and tokenforge verification is still being finalised. The current MVP demonstrates the Verun half (trust evaluation + on-chain anchor). The tokenforge verification side and the formal attestation format are on the roadmap.
+        </div>
+      </section>
 
-      <h3>Next <span class="pill pill-next">Roadmap</span></h3>
-      <ul>
-        <li>Independent security audit of Cairo contracts</li>
-        <li>Institutional validator onboarding</li>
-        <li>Production monitoring &amp; operational hardening</li>
-        <li>Developer SDK + integration docs</li>
-        <li>Mainnet beta</li>
-      </ul>
-    </section>
+      <!-- ═══ VALIDATORS ═══ -->
+      <section id="validators">
+        <h2>Validator Network</h2>
+        <p>Verun uses a 2-of-3 validator consensus model. A request is approved only when at least two validators approve <strong>and</strong> the score clears the operation's gate threshold.</p>
 
-    <!-- FAQ -->
-    <section id="faq">
-      <h2>FAQ</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Validator</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>tokenforge</strong></td>
+              <td>Founding Validator · Platform</td>
+              <td><span class="pill pill-live">Live</span></td>
+            </tr>
+            <tr>
+              <td><strong>BCP Partners</strong></td>
+              <td>Genesis Validator · Advisory / Venture Building</td>
+              <td><span class="pill pill-live">Live</span></td>
+            </tr>
+            <tr>
+              <td><strong>Open Slot</strong></td>
+              <td>Institutional — banks, custodians, compliance partners</td>
+              <td><span class="pill pill-next">Apply</span></td>
+            </tr>
+          </tbody>
+        </table>
 
-      <h3>Is this on mainnet?</h3>
-      <p>No. Verun is currently on Starknet Sepolia testnet. Mainnet deployment is on the roadmap and will follow an independent security audit.</p>
+        <p>The <code>tokenforge</code> validator is seeded directly in the <code>ValidatorRegistry</code> contract's constructor with a founding weight. Additional validators are added via <code>add_validator</code> (owner-only).</p>
 
-      <h3>What's actually anchored on-chain?</h3>
-      <p>For every approved evaluation, the API submits a <code>record_score</code> transaction to the TrustScore contract on Starknet Sepolia. The transaction records the <code>agent_id</code>, <code>score</code>, and <code>timestamp</code> — producing an immutable, timestamped record visible on Voyager.</p>
+        <p>To apply for the open institutional slot: <a href="https://www.bcpp.io/contact-us" target="_blank" rel="noopener">bcpp.io/contact-us ↗</a></p>
+      </section>
 
-      <h3>How do I become a validator?</h3>
-      <p>The Open Slot is available for institutional validators — European banks, custodians, and regulated compliance partners. Apply via <a href="https://www.bcpp.io/contact-us" target="_blank" rel="noopener">bcpp.io/contact-us</a>.</p>
+      <!-- ═══ ROADMAP ═══ -->
+      <section id="roadmap">
+        <h2>Roadmap</h2>
 
-      <h3>What does the trust score represent?</h3>
-      <p>In the current MVP, scores shown in examples are illustrative. Future versions will calculate the score from on-chain history, validator attestations, and external compliance signals. The scoring formula is under design.</p>
+        <h3>Live today <span class="pill pill-live">Live</span></h3>
+        <ul>
+          <li>Cairo TrustScore + ValidatorRegistry contracts deployed on Starknet Sepolia</li>
+          <li>Live API submits real on-chain transactions for every approved evaluation</li>
+          <li>Validators registered on-chain via the ValidatorRegistry contract</li>
+          <li>Operation-level gate thresholds enforced in evaluation logic</li>
+          <li>Open source repository on GitHub</li>
+        </ul>
 
-      <h3>Can I integrate Verun into my agent app?</h3>
-      <p>Yes — the API is public and documented above. A dedicated developer SDK is on the roadmap.</p>
+        <h3>Next <span class="pill pill-next">Roadmap</span></h3>
+        <ul>
+          <li>Independent security audit of Cairo contracts</li>
+          <li>tokenforge verification side (attestation handshake)</li>
+          <li>Institutional validator onboarding</li>
+          <li>Production monitoring &amp; operational hardening</li>
+          <li>Developer SDK + integration docs</li>
+          <li>Mainnet beta</li>
+        </ul>
+      </section>
 
-      <h3>Is Verun MiCA-compliant?</h3>
-      <p>Verun's architecture is designed to map to MiCA, FATF, and ESMA principles — but formal regulatory compliance requires external audits and KYC/AML integrations, which are on our roadmap. The current MVP is a technical building block, not a certified compliance product.</p>
+      <!-- ═══ FAQ ═══ -->
+      <section id="faq">
+        <h2>FAQ</h2>
 
-      <h3>Where can I see the code?</h3>
-      <p>Full source at <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">github.com/Fahad00674/verun-starknet-mvp</a>. MIT licensed.</p>
-    </section>
+        <div class="faq-item">
+          <h3>Is this on mainnet?</h3>
+          <p>No. Verun is currently on Starknet Sepolia testnet. Mainnet deployment is on the roadmap and will follow an independent security audit.</p>
+        </div>
 
+        <div class="faq-item">
+          <h3>What's actually anchored on-chain?</h3>
+          <p>For every approved evaluation, the API submits a <code>record_score</code> transaction to the TrustScore contract on Starknet Sepolia. The transaction records <code>agent_id</code>, <code>score</code>, and <code>timestamp</code> — producing an immutable, timestamped record visible on Voyager.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>How do I become a validator?</h3>
+          <p>The Open Slot is available for institutional validators — European banks, custodians, and regulated compliance partners. Apply via <a href="https://www.bcpp.io/contact-us" target="_blank" rel="noopener">bcpp.io/contact-us</a>.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>What does the trust score represent?</h3>
+          <p>In the current MVP, scores shown in examples are illustrative. Future versions will derive the score from on-chain history, validator attestations, and external compliance signals. The scoring formula is under design.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Can I integrate Verun into my agent app?</h3>
+          <p>Yes — the API is public and documented above. A dedicated developer SDK is on the roadmap.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Is Verun MiCA-compliant?</h3>
+          <p>Verun's architecture is designed to map to MiCA, FATF, and ESMA principles — but formal regulatory compliance requires external audits and KYC/AML integrations, which are on our roadmap. The current MVP is a technical building block, not a certified compliance product.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3>Where can I see the code?</h3>
+          <p>Full source at <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">github.com/Fahad00674/verun-starknet-mvp</a>. MIT licensed.</p>
+        </div>
+      </section>
+
+      <div class="page-footer">
+        Verun Protocol · Built by <a href="https://bcpp.io" target="_blank" rel="noopener">BCP Partners GmbH</a>
+        · <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">GitHub</a>
+        · <a href="/">← Main site</a>
+      </div>
+
+    </div>
   </main>
 </div>
 
-<footer>
-  Verun Protocol · Built by <a href="https://bcpp.io" target="_blank" rel="noopener">BCP Partners GmbH</a> ·
-  <a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">GitHub</a> ·
-  <a href="/">← Back to main site</a>
-</footer>
-
 <script>
-// Highlight active sidebar link based on scroll position
-const sections = document.querySelectorAll('.content > section');
-const sidebarLinks = document.querySelectorAll('.sidebar-links a');
-function setActive(){
-  let currentId = sections[0]?.id;
-  const scrollPos = window.scrollY + 120;
-  sections.forEach(s => { if (s.offsetTop <= scrollPos) currentId = s.id; });
-  sidebarLinks.forEach(a => {
-    a.classList.toggle('active', a.getAttribute('href') === '#' + currentId);
-  });
-}
-window.addEventListener('scroll', setActive, { passive: true });
+// Scroll-spy using IntersectionObserver — reliable active highlighting.
+(function(){
+  const sections = document.querySelectorAll('.content-wrap > section[id]');
+  const links = document.querySelectorAll('.sidebar-list[data-scroll-spy] a');
+  if (!sections.length || !links.length) return;
+
+  const byId = Object.fromEntries(
+    Array.from(links).map(a => [a.getAttribute('href').slice(1), a])
+  );
+
+  let visibleIds = new Set();
+  function updateActive(){
+    // Pick the topmost currently-visible section.
+    let activeId = null;
+    const topScroll = window.scrollY + 80;
+    for (const s of sections) {
+      if (s.offsetTop <= topScroll) activeId = s.id;
+    }
+    links.forEach(a => a.classList.remove('active'));
+    if (activeId && byId[activeId]) byId[activeId].classList.add('active');
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) visibleIds.add(e.target.id);
+      else visibleIds.delete(e.target.id);
+    });
+    updateActive();
+  }, { rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+  sections.forEach(s => io.observe(s));
+
+  window.addEventListener('scroll', updateActive, { passive: true });
+  updateActive();
+
+  // Close mobile sidebar on link click.
+  const sidebar = document.getElementById('sidebar');
+  links.forEach(a => a.addEventListener('click', () => {
+    if (window.innerWidth <= 900) sidebar.classList.remove('open');
+  }));
+})();
 </script>
 
 </body>
