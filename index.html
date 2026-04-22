@@ -266,6 +266,22 @@ a.platform-card-link:hover .plat-type.soon{color:var(--teal);border-color:var(--
 .mica-table .tag-mapped{background:var(--teal-dim);color:var(--teal);border:1px solid var(--teal-border)}
 .mica-table .tag-partial{background:rgba(255,180,60,0.12);color:#ffb43c;border:1px solid rgba(255,180,60,0.35)}
 .mica-table .tag-planned{background:rgba(160,160,160,0.1);color:#aaa;border:1px solid rgba(160,160,160,0.25)}
+.roadmap-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin:40px auto 0}
+@media(max-width:768px){.roadmap-grid{grid-template-columns:1fr}}
+.roadmap-col{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+.roadmap-col-header{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.roadmap-col-header.live{color:var(--teal)}
+.roadmap-col-header.next{color:#ffb43c}
+.roadmap-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px}
+.roadmap-list li{font-size:13px;line-height:1.5;color:var(--text);display:flex;gap:10px;align-items:flex-start}
+.roadmap-list li::before{flex-shrink:0;font-family:var(--mono);font-size:12px;line-height:1.4;margin-top:1px}
+.roadmap-col.live .roadmap-list li::before{content:"✓";color:var(--teal);font-weight:700}
+.roadmap-col.next .roadmap-list li::before{content:"→";color:#ffb43c;font-weight:700}
+.roadmap-list li a{color:var(--teal);text-decoration:none}
+.roadmap-list li a:hover{text-decoration:underline}
+.roadmap-list li small{color:var(--text3);font-size:11px;display:block;margin-top:2px;font-family:var(--mono)}
+.beta-disclaimer{max-width:720px;margin:32px auto 0;padding:14px 20px;background:rgba(255,180,60,0.06);border:1px solid rgba(255,180,60,0.25);border-radius:8px;font-size:12px;color:var(--text2);line-height:1.6;text-align:center}
+.beta-disclaimer strong{color:#ffb43c;font-family:var(--mono);letter-spacing:0.5px;font-weight:700}
 
 /* ARCHITECTURE */
 .arch-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -362,6 +378,7 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
     <a href="#demo">Demo</a>
     <a href="#platforms">Validators</a>
     <a href="#architecture">Architecture</a>
+    <a href="#roadmap">Roadmap</a>
   </div>
   <div class="nav-right">
     <div class="algo-badge">
@@ -571,6 +588,57 @@ footer{background:var(--card);border-top:1px solid var(--border);padding:36px 0}
           <div class="arch-tag">Cairo · Sepolia</div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="section" id="roadmap" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-label">Roadmap</div>
+    <h2 class="section-h2">Live today. Shipping next.</h2>
+    <p class="section-sub">Every "Live" item below is verifiable — click through to the on-chain transaction or the public repo.</p>
+
+    <div class="roadmap-grid">
+      <div class="roadmap-col live">
+        <div class="roadmap-col-header live">Live</div>
+        <ul class="roadmap-list">
+          <li>
+            Cairo TrustScore + ValidatorRegistry contracts deployed on Starknet Sepolia
+            <small><a href="https://sepolia.voyager.online/contract/0x4d1f47e42dab62a3afde081aa544b9223f5017652db449dbf7c82728bed555c" target="_blank" rel="noopener">TrustScore on Voyager ↗</a></small>
+          </li>
+          <li>
+            Live API submits real on-chain transactions for every approved evaluation
+            <small>POST /api/evaluate · response includes a real tx hash</small>
+          </li>
+          <li>
+            Validators registered on-chain via the ValidatorRegistry contract
+          </li>
+          <li>
+            Operation-level gate thresholds (read · transfer · mint · order) enforced in evaluation logic
+          </li>
+          <li>
+            Open source repository
+            <small><a href="https://github.com/Fahad00674/verun-starknet-mvp" target="_blank" rel="noopener">github.com/Fahad00674/verun-starknet-mvp ↗</a></small>
+          </li>
+        </ul>
+      </div>
+
+      <div class="roadmap-col next">
+        <div class="roadmap-col-header next">Next</div>
+        <ul class="roadmap-list">
+          <li>Independent security audit of Cairo contracts</li>
+          <li>Institutional validator onboarding</li>
+          <li>Production monitoring &amp; operational hardening</li>
+          <li>Developer SDK + integration docs</li>
+          <li>Mainnet beta</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="beta-disclaimer">
+      <strong>⚠ BETA NOTICE</strong><br>
+      This is a beta MVP running on Starknet Sepolia testnet. APIs, smart contracts, validator set, and UI may change before the final testnet release or mainnet launch. Addresses and transaction hashes shown are testnet-only and hold no economic value.
     </div>
   </div>
 </section>
