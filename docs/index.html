@@ -198,6 +198,20 @@ td strong{color:var(--text)}
   .gate-badge{order:3;margin-left:auto}
 }
 
+/* Sequence diagram */
+.seq-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 10px;margin:16px 0;overflow-x:auto}
+.seq-wrap svg{display:block;min-width:820px;max-width:100%;height:auto}
+.seq-legend{display:flex;flex-wrap:wrap;gap:14px 22px;font-family:var(--mono);font-size:10px;color:var(--text3);padding:14px 16px 6px;border-top:1px solid var(--border);margin-top:10px;justify-content:center}
+.seq-legend span{display:inline-flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:0.5px}
+.seq-legend i{display:inline-block;width:18px;height:2px;flex-shrink:0}
+.seq-legend .l-req{background:#e6eef9}
+.seq-legend .l-res{background:transparent;border-top:1px dashed #9fb0c8}
+.seq-legend .l-agent{background:#b4a3ff}
+.seq-legend .l-success{background:var(--teal)}
+.seq-legend .l-tf{background:#ffb43c}
+.seq-legend .l-chain{background:#7dc7ff;border-top:1px dashed #7dc7ff;height:0}
+.seq-legend .l-err{background:transparent;border-top:1px dashed #ff6666}
+
 /* API method badges */
 .method{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:0.6px;margin-right:6px;vertical-align:middle}
 .method-get{background:rgba(125,199,255,0.12);color:#7dc7ff;border:1px solid rgba(125,199,255,0.35)}
@@ -327,6 +341,161 @@ td strong{color:var(--text)}
         <li>The response returns the validator votes, consensus result, verdict, and (if approved) the real Starknet transaction hash.</li>
       </ol>
 
+      <h3>Sequence diagram</h3>
+      <p>Complete message flow between AI Agent, Verun trust layer, tokenforge execution layer, and Starknet — including error paths.</p>
+      <div class="seq-wrap">
+        <svg viewBox="0 0 1000 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Verun sequence diagram">
+          <defs>
+            <marker id="arrReq" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#e6eef9"/>
+            </marker>
+            <marker id="arrRes" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#9fb0c8"/>
+            </marker>
+            <marker id="arrAgent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#b4a3ff"/>
+            </marker>
+            <marker id="arrTf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#ffb43c"/>
+            </marker>
+            <marker id="arrChain" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#7dc7ff"/>
+            </marker>
+            <marker id="arrSuccess" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#00d4aa"/>
+            </marker>
+            <marker id="arrErr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" fill="#ff6666"/>
+            </marker>
+          </defs>
+
+          <!-- Lane headers -->
+          <g font-family="ui-monospace, SFMono-Regular, monospace" font-weight="700">
+            <rect x="60"  y="10" width="170" height="46" rx="8" fill="rgba(123,97,255,0.12)" stroke="rgba(123,97,255,0.4)"/>
+            <text x="145" y="32" fill="#b4a3ff" font-size="13" text-anchor="middle">AI Agent</text>
+            <text x="145" y="47" fill="#b4a3ff" font-size="9" text-anchor="middle" opacity="0.7">ArgentX · Claude</text>
+
+            <rect x="290" y="10" width="170" height="46" rx="8" fill="rgba(0,212,170,0.12)" stroke="rgba(0,212,170,0.4)"/>
+            <text x="375" y="32" fill="#00d4aa" font-size="13" text-anchor="middle">Verun Protocol</text>
+            <text x="375" y="47" fill="#00d4aa" font-size="9" text-anchor="middle" opacity="0.7">Trust Gate · Consensus</text>
+
+            <rect x="520" y="10" width="170" height="46" rx="8" fill="rgba(255,180,60,0.12)" stroke="rgba(255,180,60,0.4)"/>
+            <text x="605" y="32" fill="#ffb43c" font-size="13" text-anchor="middle">tokenforge</text>
+            <text x="605" y="47" fill="#ffb43c" font-size="9" text-anchor="middle" opacity="0.7">Chain API Gate</text>
+
+            <rect x="750" y="10" width="190" height="46" rx="8" fill="rgba(125,199,255,0.12)" stroke="rgba(125,199,255,0.4)"/>
+            <text x="845" y="32" fill="#7dc7ff" font-size="13" text-anchor="middle">Starknet Network</text>
+            <text x="845" y="47" fill="#7dc7ff" font-size="9" text-anchor="middle" opacity="0.7">Cairo · Sepolia</text>
+          </g>
+
+          <!-- Lifelines (dashed) -->
+          <g stroke="#1a2842" stroke-width="1" stroke-dasharray="4 4">
+            <line x1="145" y1="56" x2="145" y2="600"/>
+            <line x1="375" y1="56" x2="375" y2="600"/>
+            <line x1="605" y1="56" x2="605" y2="600"/>
+            <line x1="845" y1="56" x2="845" y2="600"/>
+          </g>
+
+          <g font-family="ui-monospace, SFMono-Regular, monospace" font-size="11" fill="#e6eef9">
+
+            <!-- 1. Agent → tokenforge: attempt -->
+            <line x1="145" y1="90" x2="603" y2="90" stroke="#e6eef9" stroke-width="1.5" marker-end="url(#arrReq)"/>
+            <text x="374" y="84" text-anchor="middle" fill="#e6eef9">POST /mint (attempt)</text>
+
+            <!-- 2. tokenforge → Agent: 403 -->
+            <line x1="603" y1="115" x2="147" y2="115" stroke="#9fb0c8" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrRes)"/>
+            <text x="374" y="109" text-anchor="middle" fill="#9fb0c8" font-style="italic">403 trust_check_required</text>
+
+            <!-- 3. Agent prep -->
+            <rect x="75" y="135" width="140" height="34" rx="6" fill="rgba(123,97,255,0.08)" stroke="rgba(123,97,255,0.3)" stroke-dasharray="3 3"/>
+            <text x="145" y="151" text-anchor="middle" fill="#b4a3ff" font-size="10">construct eval request</text>
+            <text x="145" y="164" text-anchor="middle" fill="#b4a3ff" font-size="10" opacity="0.8">sign with ArgentX</text>
+
+            <!-- 4. Agent → Verun: POST /api/evaluate -->
+            <line x1="145" y1="195" x2="373" y2="195" stroke="#b4a3ff" stroke-width="1.5" marker-end="url(#arrAgent)"/>
+            <text x="259" y="189" text-anchor="middle" fill="#b4a3ff">POST /api/evaluate</text>
+
+            <!-- 5. Verun: score + consensus note -->
+            <rect x="305" y="215" width="140" height="46" rx="6" fill="rgba(0,212,170,0.08)" stroke="rgba(0,212,170,0.3)" stroke-dasharray="3 3"/>
+            <text x="375" y="231" text-anchor="middle" fill="#00d4aa" font-size="10">score vs gate threshold</text>
+            <text x="375" y="245" text-anchor="middle" fill="#00d4aa" font-size="10">2-of-3 validator consensus</text>
+            <text x="375" y="257" text-anchor="middle" fill="#00d4aa" font-size="10" opacity="0.7">(tokenforge · val_2 · val_3)</text>
+
+            <!-- 6. Verun → Starknet: record_score -->
+            <line x1="375" y1="285" x2="843" y2="285" stroke="#e6eef9" stroke-width="1.5" marker-end="url(#arrReq)"/>
+            <text x="609" y="279" text-anchor="middle" fill="#e6eef9">account.execute(record_score)</text>
+
+            <!-- 7. Starknet → Verun: tx_hash -->
+            <line x1="843" y1="310" x2="377" y2="310" stroke="#7dc7ff" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrChain)"/>
+            <text x="609" y="304" text-anchor="middle" fill="#7dc7ff" font-style="italic">{ transaction_hash: 0x... }</text>
+
+            <!-- 8. Verun verified box -->
+            <rect x="300" y="325" width="150" height="24" rx="12" fill="rgba(0,212,170,0.2)" stroke="#00d4aa"/>
+            <text x="375" y="341" text-anchor="middle" fill="#00d4aa" font-weight="700" font-size="10">attestation anchored ✓</text>
+
+            <!-- 9. Verun → Agent: approved -->
+            <line x1="373" y1="375" x2="147" y2="375" stroke="#00d4aa" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrSuccess)"/>
+            <text x="259" y="369" text-anchor="middle" fill="#00d4aa" font-style="italic">{ approved, tx_hash, explorer }</text>
+
+            <!-- 10. Agent → tokenforge: retry -->
+            <line x1="145" y1="410" x2="603" y2="410" stroke="#b4a3ff" stroke-width="1.5" marker-end="url(#arrAgent)"/>
+            <text x="374" y="404" text-anchor="middle" fill="#b4a3ff">POST /mint + Verun attestation</text>
+
+            <!-- 11. tokenforge verify note -->
+            <rect x="535" y="425" width="140" height="34" rx="6" fill="rgba(255,180,60,0.08)" stroke="rgba(255,180,60,0.3)" stroke-dasharray="3 3"/>
+            <text x="605" y="441" text-anchor="middle" fill="#ffb43c" font-size="10">verify Verun attestation</text>
+            <text x="605" y="454" text-anchor="middle" fill="#ffb43c" font-size="10" opacity="0.8">read TrustScore contract</text>
+
+            <!-- 12. tokenforge → Starknet -->
+            <line x1="605" y1="485" x2="843" y2="485" stroke="#ffb43c" stroke-width="1.5" marker-end="url(#arrTf)"/>
+            <text x="724" y="479" text-anchor="middle" fill="#ffb43c">submit mint tx</text>
+
+            <!-- 13. Starknet → tokenforge -->
+            <line x1="843" y1="510" x2="607" y2="510" stroke="#7dc7ff" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrChain)"/>
+            <text x="724" y="504" text-anchor="middle" fill="#7dc7ff" font-style="italic">confirmed ~30s</text>
+
+            <!-- 14. tokenforge → Agent: 200 OK -->
+            <line x1="603" y1="545" x2="147" y2="545" stroke="#00d4aa" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrSuccess)"/>
+            <text x="375" y="539" text-anchor="middle" fill="#00d4aa" font-style="italic">200 OK + asset minted ✓</text>
+
+            <!-- Error paths divider -->
+            <line x1="60" y1="610" x2="940" y2="610" stroke="#ff6666" stroke-width="1" stroke-dasharray="2 3" opacity="0.5"/>
+            <text x="500" y="627" text-anchor="middle" fill="#ff6666" font-weight="700" font-size="11">Error paths</text>
+
+            <!-- E1: score too low -->
+            <line x1="373" y1="650" x2="147" y2="650" stroke="#ff6666" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrErr)"/>
+            <text x="259" y="644" text-anchor="middle" fill="#ff6666" font-size="10">E1: score below gate → 403 score_too_low</text>
+            <text x="259" y="662" text-anchor="middle" fill="#ff6666" font-size="9" opacity="0.8">caught at Verun</text>
+
+            <!-- E2: consensus failed -->
+            <line x1="373" y1="686" x2="147" y2="686" stroke="#ff6666" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrErr)"/>
+            <text x="259" y="680" text-anchor="middle" fill="#ff6666" font-size="10">E2: consensus not reached → 403 consensus_failed</text>
+            <text x="259" y="698" text-anchor="middle" fill="#ff6666" font-size="9" opacity="0.8">caught at Verun</text>
+
+            <!-- E3: nonce retry -->
+            <line x1="843" y1="722" x2="377" y2="722" stroke="#ff6666" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrErr)"/>
+            <text x="609" y="716" text-anchor="middle" fill="#ff6666" font-size="10">E3: NonceTooOld → auto-retry (up to 4× jittered backoff)</text>
+            <text x="609" y="734" text-anchor="middle" fill="#ff6666" font-size="9" opacity="0.8">handled at Verun</text>
+
+            <!-- E4: attestation stale -->
+            <line x1="603" y1="758" x2="147" y2="758" stroke="#ff6666" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#arrErr)"/>
+            <text x="375" y="752" text-anchor="middle" fill="#ff6666" font-size="10">E4: attestation stale → 403 attestation_expired</text>
+            <text x="375" y="770" text-anchor="middle" fill="#ff6666" font-size="9" opacity="0.8">caught at tokenforge</text>
+
+          </g>
+        </svg>
+
+        <div class="seq-legend">
+          <span><i class="l-req"></i> Request</span>
+          <span><i class="l-res"></i> Response</span>
+          <span><i class="l-agent"></i> Agent</span>
+          <span><i class="l-success"></i> Success</span>
+          <span><i class="l-tf"></i> tokenforge</span>
+          <span><i class="l-chain"></i> Starknet</span>
+          <span><i class="l-err"></i> Error</span>
+        </div>
+      </div>
+
       <h3>Trust Score Gates</h3>
       <p>Every API capability is gated behind a minimum Trust Score. Agents accumulate trust through successful, validator-approved interactions.</p>
 
@@ -451,6 +620,58 @@ trait IValidatorRegistry&lt;TContractState&gt; {
   "timestamp": "..."
 }</code></pre>
 
+      <h3><span class="method method-get">GET</span> <code>/api/validators</code></h3>
+      <p>Returns the current validator set and the on-chain ValidatorRegistry reference.</p>
+      <h4>Response</h4>
+<pre><code>{
+  "network": "Starknet Sepolia",
+  "contractAddress": "0x7e1a6bd567f3e18f...",
+  "explorer": "https://sepolia.voyager.online/contract/0x7e1a6bd567f3e18f...",
+  "consensusThreshold": "2 of 3",
+  "totalWeight": 4,
+  "count": 3,
+  "validators": [
+    { "name": "tokenforge", "weight": 2, "type": "founding", "active": true, "description": "..." },
+    { "name": "validator_2", "weight": 1, "type": "community", "active": true, "description": "..." },
+    { "name": "validator_3", "weight": 1, "type": "community", "active": true, "description": "..." }
+  ]
+}</code></pre>
+
+      <h3><span class="method method-get">GET</span> <code>/api/score/:agentId</code></h3>
+      <p>Reads the stored score for a given agent directly from the TrustScore Cairo contract. Returns <code>score: 0</code> and <code>recorded: false</code> if no score has been anchored yet for that agent.</p>
+      <h4>Response</h4>
+<pre><code>{
+  "agentId": "agent-001",
+  "score": 650,
+  "timestamp": 1745841288,
+  "timestampISO": "2026-04-28T10:34:48.000Z",
+  "recorded": true,
+  "contractAddress": "0x4d1f47e42dab...",
+  "network": "Starknet Sepolia",
+  "explorer": "https://sepolia.voyager.online/contract/0x4d1f47e42dab..."
+}</code></pre>
+
+      <h3><span class="method method-post">POST</span> <code>/api/anchor</code></h3>
+      <p>Direct anchor endpoint — runs validator consensus and, if approved, submits a <code>record_score</code> transaction on the TrustScore contract. Does <strong>not</strong> apply operation-level gate thresholds. Intended for integrations that have done their own upstream gate check.</p>
+      <h4>Request</h4>
+<pre><code>{
+  "agentId": "agent-001",
+  "score": 650
+}</code></pre>
+      <h4>Response (approved)</h4>
+<pre><code>{
+  "agentId": "agent-001",
+  "score": 650,
+  "approved": true,
+  "validators": [ ... ],
+  "totalWeight": 3,
+  "transactionHash": "0x...",
+  "contractAddress": "0x4d1f47e42dab...",
+  "explorer": "https://sepolia.voyager.online/tx/0x...",
+  "network": "Starknet Sepolia",
+  "mode": "live"
+}</code></pre>
+
       <h3><span class="method method-post">POST</span> <code>/api/evaluate</code></h3>
       <p>Full evaluation — if approved, submits a real <code>record_score</code> transaction on the TrustScore contract and returns the submitted transaction hash.</p>
       <h4>Request</h4>
@@ -486,6 +707,11 @@ trait IValidatorRegistry&lt;TContractState&gt; {
         <li>If chain env vars are missing, the response includes <code>"mode": "mock"</code> and an <code>anchorError</code>.</li>
         <li>Backend auto-retries <code>NonceTooOld</code> errors up to four times with jittered backoff.</li>
       </ul>
+
+      <div class="beta-box">
+        <strong>⚠ AUTHENTICATION GAP</strong><br>
+        All API endpoints in the current MVP are unauthenticated. Any caller can submit evaluations or anchor scores for any <code>agentId</code>. A request-authentication boundary (scoped API key, agent-signed attestation, or Verun-issued JWT) is a deliverable in the "Security &amp; ops baseline" workstream of the grant roadmap. Do not rely on the current endpoints for any production or user-asset context.
+      </div>
     </section>
 
     <!-- Integration -->
