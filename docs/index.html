@@ -88,6 +88,36 @@ td code{font-size:11px;word-break:break-all}
 /* DIAGRAM */
 .diagram{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin:16px 0;font-family:var(--mono);font-size:13px;line-height:1.8;color:var(--text);white-space:pre;overflow-x:auto}
 
+/* FLOW DIAGRAM (boxes) */
+.flow-diagram{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:32px 20px;margin:16px 0;display:flex;align-items:stretch;gap:8px;overflow-x:auto}
+.flow-step{flex:1;min-width:140px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.flow-box{width:100%;padding:16px 12px;border-radius:10px;text-align:center;font-family:var(--mono);font-size:13px;line-height:1.4}
+.flow-box h5{font-size:14px;font-weight:700;margin-bottom:6px;font-family:var(--sans)}
+.flow-box small{font-size:10px;opacity:0.75;display:block;font-family:var(--mono)}
+.flow-box.agent{background:rgba(255,180,60,0.1);border:1px solid rgba(255,180,60,0.35);color:var(--amber)}
+.flow-box.verun{background:rgba(123,97,255,0.12);border:1px solid rgba(123,97,255,0.35);color:#b4a3ff}
+.flow-box.platform{background:rgba(0,170,255,0.10);border:1px solid rgba(0,170,255,0.35);color:#7dc7ff}
+.flow-box.chain{background:var(--teal-dim);border:1px solid var(--teal-border);color:var(--teal)}
+.flow-role{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text3);font-weight:700}
+.flow-arrow{display:flex;align-items:center;color:var(--text3);font-size:22px;padding:0 4px;align-self:center;flex-shrink:0}
+@media(max-width:700px){.flow-diagram{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
+
+/* GATES */
+.gates-list{display:flex;flex-direction:column;gap:10px;margin:16px 0}
+.gate-card{display:grid;grid-template-columns:80px 1fr auto;gap:18px;align-items:center;padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:border-color 0.2s}
+.gate-card:hover{border-color:var(--border)}
+.gate-score{font-family:var(--mono);font-size:22px;font-weight:700;text-align:left}
+.gate-score.t300{color:var(--teal)}
+.gate-score.t500{color:var(--amber)}
+.gate-score.t600{color:#ff8888}
+.gate-body h4{font-size:14px;font-weight:700;margin:0 0 4px;color:var(--text);font-family:var(--sans);text-transform:none;letter-spacing:normal}
+.gate-body p{margin:0;font-size:12px;color:var(--text3);font-family:var(--mono);line-height:1.5}
+.gate-badge{font-family:var(--mono);font-size:10px;font-weight:700;padding:5px 11px;border-radius:6px;letter-spacing:1px;white-space:nowrap}
+.gate-badge.t300{color:var(--teal);background:var(--teal-dim);border:1px solid var(--teal-border)}
+.gate-badge.t500{color:var(--amber);background:rgba(255,180,60,0.12);border:1px solid rgba(255,180,60,0.35)}
+.gate-badge.t600{color:#ff8888;background:rgba(255,80,80,0.10);border:1px solid rgba(255,80,80,0.3)}
+@media(max-width:600px){.gate-card{grid-template-columns:60px 1fr;gap:12px;padding:14px}.gate-badge{grid-column:1/-1;justify-self:start;margin-top:4px}}
+
 /* FOOTER */
 footer{margin-top:80px;padding:32px;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono)}
 footer a{color:var(--text2)}
@@ -161,26 +191,41 @@ footer a{color:var(--text2)}
       <h2>Architecture</h2>
       <p>Verun has three layers: a client-facing HTTP API, a validator consensus engine, and on-chain anchoring in Cairo smart contracts.</p>
 
-      <div class="diagram">┌──────────┐   POST /api/evaluate    ┌─────────────────────┐
-│  Client  │ ──────────────────────► │ Vercel Serverless   │
-└──────────┘                          │   evaluate.js        │
-                                      │                      │
-                                      │  1. Score vs gate    │
-                                      │  2. Validator vote   │
-                                      │  3. If approved →    │
-                                      │     signed tx to     │
-                                      │     TrustScore       │
-                                      └──────────┬───────────┘
-                                                 │ starknet.js v8
-                                                 ▼
-                                      ┌─────────────────────┐
-                                      │  Starknet Sepolia   │
-                                      │                      │
-                                      │  TrustScore.cairo    │
-                                      │  └ record_score()    │
-                                      │                      │
-                                      │  ValidatorRegistry   │
-                                      └─────────────────────┘</div>
+      <h3>Flow</h3>
+      <p>Verun acts as the trust middleware between AI agents and on-chain execution. Trust scores require 2-of-3 validator consensus before any score is updated on-chain.</p>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <div class="flow-box agent">
+            <h5>Agent</h5>
+            <small>AI · Claude · Custom</small>
+          </div>
+          <div class="flow-role">Caller</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box verun">
+            <h5>Verun</h5>
+            <small>Score + Consensus</small>
+          </div>
+          <div class="flow-role">Trust Gate</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box platform">
+            <h5>tokenforge</h5>
+            <small>Chain API Gate</small>
+          </div>
+          <div class="flow-role">Execution</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-box chain">
+            <h5>⛓ Starknet</h5>
+            <small>Anchor + Settlement</small>
+          </div>
+          <div class="flow-role">Settlement</div>
+        </div>
+      </div></div>
 
       <h3>Request flow</h3>
       <ol>
@@ -191,16 +236,37 @@ footer a{color:var(--text2)}
         <li>The response returns the validator votes, consensus result, verdict, and (if approved) the real Starknet transaction hash</li>
       </ol>
 
-      <h3>Operation gates</h3>
-      <table>
-        <thead><tr><th>Operation</th><th>Required score</th><th>Rationale</th></tr></thead>
-        <tbody>
-          <tr><td><code>read</code></td><td>300</td><td>Low-stakes discovery actions</td></tr>
-          <tr><td><code>transfer</code></td><td>500</td><td>Material fund movement</td></tr>
-          <tr><td><code>mint</code></td><td>500</td><td>Token issuance</td></tr>
-          <tr><td><code>order</code></td><td>600</td><td>Highest-stakes commitments</td></tr>
-        </tbody>
-      </table>
+      <h3>Trust Score Gates</h3>
+      <p>Every API capability is gated behind a minimum Trust Score. Agents accumulate trust through successful, validator-approved interactions.</p>
+
+      <div class="gates-list">
+        <div class="gate-card">
+          <div class="gate-score t300">300+</div>
+          <div class="gate-body">
+            <h4>Chain API Read Access</h4>
+            <p><code>GET /balance</code> · <code>GET /tokens</code> · <code>GET /positions</code> — wallet read-only</p>
+          </div>
+          <div class="gate-badge t300">READ-ONLY</div>
+        </div>
+
+        <div class="gate-card">
+          <div class="gate-score t500">500+</div>
+          <div class="gate-body">
+            <h4>Mint &amp; Transfer</h4>
+            <p><code>POST /mint</code> · <code>POST /transfer</code> — tokenised securities via tokenforge Chain API</p>
+          </div>
+          <div class="gate-badge t500">MINT / TRANSFER</div>
+        </div>
+
+        <div class="gate-card">
+          <div class="gate-score t600">600+</div>
+          <div class="gate-body">
+            <h4>Full Order Management</h4>
+            <p><code>POST /order</code> · <code>PATCH /order</code> — full tokenforge order-engine access</p>
+          </div>
+          <div class="gate-badge t600">ORDER MGT.</div>
+        </div>
+      </div>
     </section>
 
     <!-- CONTRACTS -->
